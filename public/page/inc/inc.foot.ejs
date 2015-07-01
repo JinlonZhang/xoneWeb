@@ -1,0 +1,41 @@
+<% if(miniDev == 1){ %>
+    <script type="text/javascript" src="/src/js/lib/jquery-1.9.1.min.js" ></script>
+    <script type="text/javascript" src="/src/js/lib/json2.js" ></script>
+    <script type="text/javascript" src="/src/js/lib/Das.js" ></script>
+    <script type="text/javascript" src="/src/js/ui/UI.Event.js" ></script>
+    <script type="text/javascript" src="/src/js/ui/UI.Base.js" ></script>
+    <script type="text/javascript" src="/src/js/ui/UI.FormValidator.js" ></script>
+    <script type="text/javascript" src="/src/js/ui/UI.Popup.js" ></script>
+    <script type="text/javascript" src="/src/js/ui/UI.PopupSelect.js" ></script>
+    <script type="text/javascript" src="/src/js/ui/UI.Message.js" ></script>
+    <script type="text/javascript" src="/src/js/ui/UI.AjaxUpload.js" ></script>
+    <script type="text/javascript" src="/src/js/ui/UI.Window.js" ></script>
+    <script type="text/javascript" src="/src/js/ui/UI.Loading.js" ></script>
+    <script type="text/javascript" src="/src/js/ui/UI.WaterFall.js" ></script>
+    <script type="text/javascript" src="/src/js/app/app.common.js" ></script>
+    <script type="text/javascript" src="/src/js/app/app.bind.js" ></script>
+    <script type="text/javascript" src="/src/js/page/user.share.js" ></script>
+    <script type="text/javascript" src="/src/js/page/user.share.bb.js" ></script>
+    <script type="text/javascript" src="/src/js/page/user.addToAlbum.js" ></script>
+<% }else{ %>
+    <script type="text/javascript" src="/build/js/base.js?v=20140909" ></script>
+<% } %>
+<script>
+    $(function(){
+        app.common.init();
+        app.bind.init({
+            sessionUserId: '<%= req.session.user && req.session.user._id %>'
+        });
+    });
+</script>
+<% if(miniDev == 0){ %>
+<div class="hide">
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=34692784" charset="UTF-8"></script>
+    <script type="text/javascript">
+        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F8740c8e2d8649b1bd1e46f6f6ad45960' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+<% } %>
+
+<% include inc.tkapi.ejs %>

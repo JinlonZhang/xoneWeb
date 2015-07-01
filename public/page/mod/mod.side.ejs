@@ -1,0 +1,15 @@
+<div class="g-sd">
+    <div class="g-sd-in">
+        <ul class="g-sd-menu">
+            <li><a href="/index" class="<%= req.route.path == '/index' ? 'now':'' %>" >首页</a></li>
+            <li><a href="/item" class="<%= req.route.path == '/item' ? 'now':'' %>" >宝贝</a></li>
+            <% if(req.session.user.type == 0){ %>
+                <!--
+                <li><a href="/index" class="<%= req.route.path == '/index' ? 'now':'' %>" >数据统计</a></li>
+                -->
+                <li><a href="/category" class="<%= req.route.path == '/category' ? 'now':'' %>" >分类</a></li>
+                <li><a href="/manager" class="<%= req.route.path == '/manager' ? 'now':'' %>" >小编</a></li>
+            <% } %>
+        </ul>
+    </div>
+</div>

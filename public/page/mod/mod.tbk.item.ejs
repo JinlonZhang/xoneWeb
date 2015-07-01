@@ -1,0 +1,52 @@
+<%
+var url = detail.href;
+%>
+
+<%
+    var s = {
+        host: URL.parse(url).host,
+        itemId: URL.parse(url, true).query.id
+    }
+%>
+<style>
+    .dt-btn{margin-top: 30px;height: 60px;text-align:right;line-height:60px;border: #aaa 0px solid;}
+    #tk_box_1{display: inline!important;}
+</style>
+<div class="dt-btn">
+    <% if(s.host == 'redirect.simba.taobao.com'){ %>
+        <style>
+            .dt-buy{
+                background: url("http://a.xnimg.cn/mall/plaza/img/btns.png") no-repeat 0 -208px;
+                cursor: pointer;
+                display: inline-block;
+                height: 45px;
+                width: 230px;
+                color: #333333;
+                outline: medium none;
+                text-decoration: none;
+            }
+            .dt-buy b{
+                background: url("http://a.xnimg.cn/mall/plaza/img/btns.png") no-repeat right -373px;
+                color: #FFFFFF;
+                display: block;
+                float: left;
+                font-family: Tahoma;
+                font-size: 19px;
+                height: 45px;
+                line-height: 42px;
+                margin-left: 45px;
+                padding-right: 120px;
+            }
+            .dt-buy:hover {background-position: 0 -153px;}
+            .dt-buy:hover b {background-position: right -318px;}
+            .dt-buy:active {background-position: 0 -98px;}
+            .dt-buy:active b {background-position: right -263px;}
+        </style>
+        <a target="_blank" href="<%= linkUrl + 'go/' + detail._id %>" class="dt-buy"><b><%= detail.price.toFixed(2) %></b></a>
+
+    <% }else{ %>
+    <div style="margin: 10px 0;text-align: right;">
+        <a target="_blank" data-type="0" biz-itemid="<%= s.itemId %>" data-tmpl="230x45" data-tmplid="225" data-rd="2" data-style="2" data-border="0" href="<%= url %>"></a>
+    </div>
+<% } %>
+</div>

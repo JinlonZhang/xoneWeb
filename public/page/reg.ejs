@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include /inc/inc.head.ejs %>
+</head>
+<body>
+<% include /mod/mod.head.ejs %>
+<div class="reg-c">
+
+    <div class="reg-fm-w g-wp">
+        <div class="reg-sd">
+            <p>已有帐号？<a class="a-c" href="/login">登录</a></p>
+            <p>
+                使用以下账号直接登录
+                <a href="javascript://" class="g-oa-qq j-qqLogin"></a>
+                <a href="javascript://" class="g-oa-wb j-wbLogin"></a>
+            </p>
+        </div>
+        <div class="reg-mn">
+            <div class="u-fm-tit">注册</div>
+
+            <form action="/api/reg" method="post" class="u-fm j-form">
+                <div class="msg msg-warn" id="msg"></div>
+                <div class="u-fm-i">
+                    <i class="u-fm-key">邮箱</i>
+                    <div><input type="text" name="login_name" style="width: 260px;" allow='{"require": 1, "title": "邮箱"}'/>
+                    <i class="ch-info">用于登录和找回密码</i></div>
+                </div>
+                <div class="u-fm-i"><i class="u-fm-key">密码</i><input type="password" name="pwd" id="pwd" allow='{"require": 1, "title": "密码"}'/></div>
+                <div class="u-fm-i"><i class="u-fm-key">确认密码</i><input type="password" name="pwd2" allow='{"require": 1, "confirm": "pwd", "title": {"require":"确认密码", "confirm": "两次密码"} }'/></div>
+                <div class="u-fm-hr"></div>
+                <div class="u-fm-i">
+                    <i class="u-fm-key">昵称</i>
+                    <input type="text" name="name" allow='{"require": 1, "title": "昵称"}' />
+                </div>
+
+
+                <div class="u-fm-i u-fm-btn">
+                    <input class="u-fm-smt" type="submit" value="注册" />
+                    <a href="javascript://" class="u-btn u-b-orange u-b-big j-submit">注册</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<% include /mod/mod.foot.ejs %>
+
+</body>
+<% include /inc/inc.foot.ejs %>
+<script>
+    $(function(){
+
+        $('.j-form').data('opt', {
+            hideText: 1,
+            fn: function(){
+                window.location.href = '/';
+            }
+        })
+    })
+</script>
+</html>

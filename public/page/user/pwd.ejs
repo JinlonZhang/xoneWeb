@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../inc/inc.head.ejs %>
+    <link rel='stylesheet' href='/src/css/page/user.css' />
+</head>
+<body>
+<% include ../mod/mod.head.ejs %>
+<div class="g-bd us-wp">
+    <div class="g-wp">
+        <% include mod.head.ejs %>
+
+        <div class="us-bd1">
+
+            <% include mod.side.ejs %>
+
+            <div class="us-mn1">
+                <div class="us-tit">
+                    <b>修改密码</b>
+                </div>
+                <div id="msg" class="msg msg-warn hide"></div>
+                <form action="/api/modifyPwd" method="post" class="u-fm j-form">
+                    <div class="u-fm-i">
+                        <i class="u-fm-key">旧密码</i>
+                        <input type="password" name="old_pwd" allow='{"require": 1, "title":"旧密码"}'/>
+                    </div>
+                    <div class="u-fm-hr"></div>
+                    <div class="u-fm-i">
+                        <i class="u-fm-key">新密码</i>
+                        <input type="password" name="pwd1" id="pwd1" value="" allow='{"require": 1, "length": [6, 16], "title":{"require": "新密码", "length": ["新密码", 6, 16]}}' />
+                    </div>
+                    <div class="u-fm-i">
+                        <i class="u-fm-key">确认新密码</i>
+                        <input type="password" name="pwd2" value="" allow='{"require": 1, "length": [6, 16], "confirm":"pwd1", "title":{"require":"确认密码", "length": ["新密码", 6, 16], "confirm": "两次密码"}}' />
+                    </div>
+                    <div class="u-fm-i u-fm-btn">
+                        <input class="u-fm-smt" type="submit" value="修改" />
+                        <a href="javascript://" class="u-btn u-b-orange j-submit">保存</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<% include ../mod/mod.foot.ejs %>
+
+<% include ../inc/inc.foot.ejs %>
+<% include ../mod/mod.global.ejs %>
+<script>
+    $(function(){
+
+    })
+</script>
+</body>
+</html>

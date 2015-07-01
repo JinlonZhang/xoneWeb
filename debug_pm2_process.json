@@ -1,0 +1,7 @@
+{
+    "name"       : "debug_web",
+    "script"     : "debug_app.js",
+    "error_file" : "/data/log/debug-web-err.log",
+    "out_file"   : "/data/log/debug-web-out.log",
+    "pid_file"   : "/data/log/debug-web.pid"
+}

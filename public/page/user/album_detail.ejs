@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../inc/inc.head.ejs %>
+    <link rel='stylesheet' href='/src/css/page/user.css' />
+    <style>
+        .ad-us{height: 22px;}
+        .ad-bar{margin-bottom: 20px;}
+        .ad-name{float: left;margin-right: 20px;font-size: 24px;color: #666;font-weight: normal;}
+        .ad-desc{margin-top: 12px;line-height: 18px;}
+        .desc{margin: 0 10px;}
+        .ad-share-img{}
+        .ad-share-img img{}
+    </style>
+</head>
+<body>
+<% include ../mod/mod.head.ejs %>
+<div class="g-bd us-wp">
+    <div class="g-wp">
+        <div class="ad-us">
+
+            <a href="<%= linkUrl %>user/<%= user._id %>" class="a-n" target="_blank"><%= user.name %></a>
+            <button class="u-btn u-b-orange u-b-mini">关注</button>
+        </div>
+
+        <div class="us-mn-all">
+            <div class="ad-bar">
+                <h1 class="ad-name"><%= detail.name %></h1>
+                <button class="u-btn u-b-white u-b-small" id="edit"><i class="ico ico-pencil ico-c-green"></i>编辑</button>
+                <button class="u-btn u-b-white u-b-small" id="del"><i class="ico ico-remove ico-c-red"></i>删除</button>
+                <% if(detail.description){ %>
+                    <div class="ad-desc"><i class="ico ico-q-l ico-none ico-18"></i><i class="desc"><%= detail.description %></i><i class="ico ico-q-r ico-none ico-18"></i></div>
+                <% } %>
+            </div>
+
+            <div class="ly-item-list" id="shareList">
+                <% list.forEach(function(share){ %>
+                <div class="ly-item-in j-panel">
+                    <div class="ly-item-img ad-share-img">
+                        <% share.imgs.forEach(function(img){ %>
+                            <img class="j-itemImg" alt="" src="<%= img.url %>!225x999" style="height: <%= img.size.h %>px"/>
+                        <% }) %>
+                    </div>
+                    <div class="ly-item-info">
+                        <div class="ly-item-btn">
+                            <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love"><i class="ico ico-love ico-c-white"></i>喜欢</a>
+                        </div>
+
+                    </div>
+                </div>
+                <% })%>
+            </div>
+
+
+        </div>
+
+    </div>
+    <% include ../mod/mod.foot.ejs %>
+</div>
+<div class="hide">
+    <div class="ab-add" id="editWin">
+        <div class="u-win-tit">编辑专辑</div>
+        <div class="u-win-bd">
+            <form action="/api/album" method="post" class="u-fm u-fm-win j-form">
+                <div class="u-fm-i">
+                    <i class="u-fm-key">名称</i>
+                    <input type="text" name="name" style="width: 300px;" value="<%= detail.name %>"/>
+                </div>
+                <div class="u-fm-i">
+                    <i class="u-fm-key">描述</i>
+                    <textarea name="description" style="width: 350px;height: 80px;"><%= detail.description %></textarea>
+                </div>
+                <div class="u-fm-i u-fm-btn">
+                    <input type="hidden" name="_id" value="<%= detail._id %>" />
+                    <input class="u-fm-smt" type="submit" value="保存" />
+                    <a href="javascript://" class="u-btn u-b-orange u-b-big j-submit"><i class="fa fa-save fa-16 fa-white"></i>保存</a>
+                    <a href="javascript://" class="u-btn u-b-white u-b-big j-Win-close"><i class="fa fa-save fa-16 fa-white"></i>取消</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<% include ../inc/inc.foot.ejs %>
+<script>
+    var page = {
+
+        url: {
+            share: '/api/share',
+            del: '/api/album'
+        },
+
+        init: function(o){
+            var w = this;
+
+            w._id = o._id;
+            w.author_id = o.author_id;
+
+            w.initHTML();
+            w.initEvent();
+        },
+
+        initHTML: function(){
+            var w = this;
+
+            w.wf = new UI.WaterFall({
+                el: $('#shareList')
+            });
+
+            w.win = new UI.Window({
+                opt: {
+                    h: 330,
+                    w: 560
+                }
+            });
+            w.win.setContent( $('#editWin') );
+        },
+
+        initEvent: function(){
+            var w = this;
+
+            $('#edit').click(function(){
+                w.win.open();
+            });
+
+            $('#del').click(function(){
+                var d = $(this);
+                d.data('opt', {
+                    hideText: 1,
+                    fn: function(){
+                        window.location.href = '/user/' + w.author_id + '/album';
+                    }
+                })
+                if(window.confirm('删除专辑，专辑里的照片都会被删除！\n\n确定删除？')){
+                    $.ajax({
+                        type: 'delete',
+                        url: w.url.del,
+                        data: {_id: w._id},
+                        dataType: 'json',
+                        success: function(o){
+                            app.common.ajaxCallBack(o, d);
+                        }
+                    })
+                }
+            });
+
+            /*
+            window.onscroll = Das.throttle(function(){
+                var x = $(document).scrollTop();
+
+                w.loadMore(x);
+            }, 20);
+            */
+        }
+
+    }
+    $(function(){
+        page.init({
+            _id: '<%= detail._id %>',
+            author_id: '<%= user._id %>'
+        });
+    })
+</script>
+</body>
+</html>

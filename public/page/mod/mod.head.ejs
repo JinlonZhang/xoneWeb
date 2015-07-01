@@ -1,0 +1,96 @@
+<%
+var user = req.session.user;
+%>
+<style>
+    .usr-tp{position: relative;margin-left: 6px;}
+
+    a.usr-link{display:block;height: 100%!important;line-height: 38px!important;margin: 0!important;}
+    a.usr-link:hover{text-decoration: none;}
+    a.usr-link img{width: 30px;height: 30px;border-radius: 3px;vertical-align: middle;margin-right: 4px;}
+    .usr-nav-wp{height: 100px;width: 110px;background: #fff;}
+    .usr-nav-wp li{width:100%;height: 30px;line-height: 30px;margin-bottom: 5px;}
+    .usr-nav-wp li.line{height: 1px;line-height: 1px;margin-bottom: 4px;background: #ddd;}
+
+    a.usr-nav:link, a.usr-nav:active{display: block;border-radius: 2px;padding-left: 8px;}
+    a.usr-nav:hover{text-decoration: none;background: #ff5b97;color: #fff;}
+    a.usr-nav:hover i.ico{color: #fff;}
+
+    .tb-99{}
+</style>
+<div class="g-usr">
+    <div class="g-usr-in g-wp">
+        <ul class="g-tp g-tp-qq">
+            <li><a class="f g-tp-a" rel="nofollow" target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=f26debdb42e41b1597b98f1653c985742f2618a23720fcd893ee63ac7f5d5c7b"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="加入QQ群，随时随地发现潮流精品，分享网购乐趣" title="加入QQ群，随时随地发现潮流精品，分享网购乐趣"></a></li>
+        </ul>
+        <ul class="g-tp g-tp-usr">
+            <% if(user){ %>
+                <li class="usr-tp j-pop" opt='{"trigger": "hover", "pos":"right"}'>
+                    <a class="f usr-link" href="javascript://">
+                        <i class="ico ico-plus ico-c-rosy ico-16 ico-none"></i>
+                        分享照片
+                        <i class="ico ico-angle-down ico-r"></i>
+                    </a>
+                    <div class="u-pop-child usr-nav-wp j-pop-box" style="height: 105px;">
+                        <ul>
+                            <li><a href="javascript://" class="usr-nav j-shareBB"><i class="ico ico-plus ico-c-rosy"></i>发布宝贝</a></li>
+                            <li class="line"></li>
+                            <li><a href="javascript://" class="usr-nav j-share" _t="1"><i class="ico ico-image ico-c-rosy"></i>分享搭配照</a>
+                            <li><a href="javascript://" class="usr-nav j-share" _t="2"><i class="ico ico-image ico-c-rosy"></i>分享晒货照</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="usr-tp j-pop" opt='{"trigger": "hover", "pos":"right"}'>
+
+                    <a class="f usr-link" href="/user/<%= user._id %>">
+                        <img src="<%= user.avatarUrl %>!50x50"/>
+                        <%= user.name %>
+                        <i class="ico ico-angle-down ico-r"></i>
+                    </a>
+                    <div class="u-pop-child usr-nav-wp j-pop-box" style="height: 66px;">
+                        <ul>
+                            <li><a href="/user/<%= user._id %>/profile" class="usr-nav"><i class="ico ico-config ico-c-grey"></i>个人设置</a></li>
+                            <li><a href="/logout" rel="nofollow" class="usr-nav">退出</a></li>
+                        </ul>
+                    </div>
+                </li>
+            <% }else{ %>
+                <li><a href="javascript://" class="g-tp-a j-wbLogin f"><i class="ico ico-wb"></i>微博登录</a></li>
+                <li><a href="javascript://" class="g-tp-a j-qqLogin"><i class="ico ico-qq"></i>QQ登录</a></li>
+                <li><a class="g-tp-a" href="/login" rel="nofollow">登录</a></li>
+                <li><a class="g-tp-a" href="/reg" rel="nofollow">注册</a></li>
+
+            <% } %>
+        </ul>
+    </div>
+</div>
+
+<div class="g-hd" id="G_hd">
+
+    <div class="g-hd-in g-wp">
+        <div class="g-logo">
+            <a href="<%= linkUrl %>"><img src="/src/img/logo.png?_=20140920" alt="叮当街"/></a>
+        </div>
+        <div style="position: absolute;bottom: 20px;right: 0px;width: 320px;height: 30px;">
+            <script type="text/javascript">document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E%3Cscript charset="utf-8" src="http://rp.baidu.com/rp3w/3w.js?sid=681797185030458077') + '&t=' + (Math.ceil(new Date()/3600000)) + unescape('"%3E%3C/script%3E'));</script>
+        </div>
+    </div>
+</div>
+<%
+    var catId = locals.categoryId || "";
+    var t = URL.parse(req.url).pathname.split('/');
+    var d = t[t.length - 1];
+%>
+<div class="g-nav" id="G_nav">
+    <ul class="g-nav-in g-wp">
+        <li class="h"><a class="nav <%= catId == "home" ? 'now' : ''%>" href="<%= linkUrl %>">首页</a></li>
+        <li><a class="nav a-nav-h <%= catId == "hot" ? 'now' : ''%>" href="<%= linkUrl %>guang/hot">今日最热</a></li>
+        <% categoryList.forEach(function(one, i){ %>
+            <li><a class="<%= one.self._id == catId ? 'now' : ''%>" href="<%= linkUrl + 'guang/' + one.self.urlName %>"><%= one.self.name %></a></li>
+
+        <% }) %>
+        <li class="line"></li>
+        <li><a class="nav <%= d == 'album' && t.length == 2 ? 'now' : ''%>" href="<%= linkUrl %>album">专辑</a></li>
+        <li><a class="nav <%= d == 'share' && t.length == 2 ? 'now' : ''%>" href="<%= linkUrl %>share">搭配</a></li>
+        <li><a class="nav <%= d == 'look' && t.length == 2 ? 'now' : ''%>" href="<%= linkUrl %>look">晒货</a></li>
+    </ul>
+</div>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../inc/inc.head.ejs %>
+    <style>
+        .sh-bd{margin: 10px 0 30px 0;overflow: hidden;min-height: 600px;_height:600px;background: #fff;border: #ccc 1px solid;}
+        .sh-img{width: 450px;padding: 20px;text-align: center;min-height:600px;_height:600px;background: #eee;}
+        .sh-img img{margin: 0 auto;}
+        .sh-us-wp{padding: 20px 30px;width: 408px;float: right;}
+        .sh-us-info{position: relative}
+        .sh-us-img{border-radius: 4px;width: 100px;height: 100px;}
+        .sh-us-name{position: absolute;left:120px;top:10px;font-size: 16px;height: 30px;line-height: 30px;}
+        .sh-us-num{position: absolute;left:120px;top:50px;}
+        .sh-desc{margin: 20px 0;color: #666;}
+        .desc{padding: 0 14px;}
+        .sh-link{margin:10px 0 15px 0;padding-bottom:5px;border-bottom:#ccc 1px dotted}
+        .lk-tit{height: 24px;line-height: 24px;}
+        .lk-tit .tit{font-weight: 700;}
+        .lk-list{margin: 0px 0 10px;overflow: hidden}
+        .lk-list li{width: 100%;padding: 8px 0;line-height: 20px;margin-bottom: 14px;}
+        .lk-list li a.a-lk{width: 400px;float: left;}
+        .sh-btn{margin: 8px 0 12px 0;}
+        .sh-com{}
+        .sh-com-input{padding: 10px 0 20px 0;}
+        .sh-com-btn{margin: 6px 0 0 0;}
+        .sh-com-list{}
+        .sh-com-list ul{}
+        .sh-com-list ul li{min-height: 40px;_height:40px;margin-bottom:10px;position: relative;padding: 10px 10px 10px 0;}
+        .sh-com-list ul li:hover{background: #eee;}
+        .sh-com-list ul li:hover .com-btn{display: block;}
+        .com-avt{width: 36px;height: 36px;border-radius: 50%;float: left;margin-left: 10px;}
+        .com-name{padding: 0 20px 0 55px;}
+        .com-con{padding: 4px 20px 0 55px;line-height: 20px;}
+        .com-btn{position: absolute;right: 10px;bottom: 10px;display: none;}
+    </style>
+</head>
+<body>
+<% include ../mod/mod.head.ejs %>
+<div class="g-bd us-wp">
+    <div class="g-wp">
+
+        <div class="sh-bd">
+            <div class="sh-us-wp">
+                <div class="sh-us-info">
+                    <img class="sh-us-img" src="<%= user.avatarUrl %>!100x100" />
+                    <p class="sh-us-name">
+                        <a href="<%= linkUrl %>user/<%= user._id %>" target="_blank" class="a-n"><%= user.name %></a>
+                        <% if(isSelf){ %>
+
+                        <% }else{ %>
+                            <% if(isFollow){ %>
+                                <button style="vertical-align: text-bottom" class="u-btn u-b-white u-b-mini j-follow" _id="<%= user._id %>"><i class="ico ico-check ico-mini"></i>已关注</button>
+                            <% }else{ %>
+                                <button style="vertical-align: text-bottom" class="u-btn u-b-orange u-b-mini j-follow" _id="<%= user._id %>"><i class="ico ico-plus2 ico-c-white ico-mini"></i>关注</button>
+                            <% } %>
+                        <% } %>
+                    </p>
+                    <p class="sh-us-num">
+                        粉丝 <i class="ch-lg ch-cate"><%= user.fans_count %></i>
+                        <i style="padding-left: 15px;">赞 <i class="ch-lg ch-cate"><%= user.love_count %></i></i>
+                    </p>
+                </div>
+
+                <% if(detail.description){ %>
+                    <div class="sh-desc"><i class="ico ico-q-l ico-none ico-18"></i><i class="desc"><%= detail.description %></i><i class="ico ico-q-r ico-none ico-18"></i></div>
+                <% } %>
+
+                <div class="sh-link">
+                    <div class="lk-tit">
+                        <% if(detail.type == 0){ %>
+
+                        <% }else{ %>
+                            <i class="tit">搭配单品</i>
+                            <% if(isSelf){ %>
+                                <button style="vertical-align: text-bottom" class="u-btn u-b-mini u-b-white" id="addLink"><i class="ico ico-plus"></i>添加</button>
+                            <% } %>
+                        <% } %>
+                    </div>
+                    <ul class="lk-list">
+                        <% itemList.forEach(function(item){ %>
+                            <li class="j-delParent">
+
+                                <% include ../mod/mod.tbk.share.ejs %>
+
+                                <% if(isSelf && detail.type != 0){ %>
+                                    <button class="u-btn u-b-mini u-b-white j-del j-action" _url="/api/share/link" _id="<%= item._id %>"><i class="ico ico-remove"></i>删除</button>
+                                <% }%>
+
+                            </li>
+                        <% }) %>
+                    </ul>
+                </div>
+
+                <div class="sh-btn">
+
+                    <button class="u-btn u-b-white u-b-small j-love" _url="/api/share/love" _id="<%= detail._id %>"><i class="ico ico-thumbs-up"></i>赞<i class="ly-item-num j-loveNum"><%= detail.love_total == 0 ? '' : '(' + detail.love_total + ')' %></i></button>
+
+                    <%
+                        var shareTxt = detail.description, shareImg = detail.imgs.length > 0 ? detail.imgs[0].url + '!450x999.jpg' : '';
+                        if(shareTxt == "" || shareTxt == undefined){
+                            shareTxt = '哈～好喜欢这件宝贝，非常漂亮，分享给大家～～';
+                        }
+
+                    %>
+                    <div style="float: right;width: 138px;height: 30px;">
+                        <div class="bdsharebuttonbox"><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_more" data-cmd="more"></a></div>
+                        <script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"687411186","tqq":"ef72ba0dc1c9df19c5a5d0a1e8f03e01"},"bdText":"<%= shareTxt %>","bdMini":"2","bdMiniList":["qzone","tsina","weixin","renren","tqq","tqf","tsohu","t163","meilishuo","mogujie","diandian","huaban"],"bdPic":"<%= shareImg %>","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+                    </div>
+                </div>
+
+                <div class="sh-com-input">
+                    <form action="/api/share/comment" method="post" class="j-form" id="comForm">
+                        <textarea name="content" placeholder="随便说点什么吧：）" style="width: 380px;height: 60px;"></textarea>
+                        <input type="hidden" name="share_id" value="<%= detail._id %>" />
+                        <input type="hidden" name="author_id" value="<%= req.session.user && req.session.user._id %>" />
+                        <button class="u-btn u-b-white sh-com-btn">确定</button>
+                    </form>
+                </div>
+
+                <div class="sh-com-list">
+                    <ul>
+                        <% comment.forEach(function(com){ %>
+                            <li class="j-delParent">
+                                <a href="<%= linkUrl %>user/<%= com.author._id %>" target="_blank">
+                                    <img class="com-avt" src="<%= com.author.avatarUrl %>!50x50">
+                                </a>
+                                <div class="com-name">
+                                    <a href="<%= linkUrl %>user/<%= com.author._id %>" class="a-n" target="_blank"><%= com.author.name %></a>
+                                    <i class="ch-info" style="margin-left: 12px;"><%= dateFormat(com.date) %></i>
+                                </div>
+                                <div class="com-con"><%- com.content %></div>
+                                <div class="com-btn">
+                                    <% if(com.isSelf){ %>
+                                        <button class="u-btn u-b-mini u-b-white j-del j-action" _url="/api/share/comment" _id="<%= com._id %>" ><i class="ico ico-remove ico-mini"></i>删除</button>
+                                    <% } %>
+                                </div>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </div><!-- end of sh-com-list -->
+            </div><!-- end of sh-us-wp -->
+
+            <div class="sh-img">
+                <% detail.imgs.forEach(function(img, i){%>
+                    <% if(i <= 1){ %>
+                        <img src="<%= img.url %>!450x999.jpg" />
+                    <% }else{ %>
+                        <img class="j-delayImg" _src="<%= img.url %>!450x999.jpg" />
+                    <% } %>
+                <% }) %>
+            </div>
+
+        </div><!-- end of sh-bd -->
+
+        <div class="ly-item-tit">
+            <a href="<%= linkUrl %>user/<%= user._id %>" target="_blank" class="a-n"><%= user.name %></a> 的更多分享
+        </div>
+
+        <div class="ly-item-list" id="moreList">
+            <% list.forEach(function(share){ %>
+            <%
+                var img = share.img, si = share.item;
+            %>
+            <div class="ly-item-in j-panel">
+                <div class="ly-item-img" style="height: <%= img.size.h %>px">
+                    <a href="<%= linkUrl + 'share/' + share._id %>" target="_blank"><img class="j-delayImg" alt="<%= si.name %>" _src="<%= img.url %>!225x999.jpg" /></a>
+                </div>
+                <div class="ly-item-info">
+                    <div class="ly-item-btn">
+                        <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love j-love" _url="/api/share/love" _id="<%= share._id %>"><i class="ico ico-love ico-c-white ico-mini ico-none"></i><i class="ly-item-num j-loveNum"><%= share.love_total == 0 ? '' : '(' + share.love_total + ')' %></i></a>
+                        <% if(si.price != 0 && si.price != undefined){ %>
+                        <div class="ly-item-price"><i class="ch-price-p">￥</i><%= si.price.toFixed(2) %></div>
+                        <% } %>
+                    </div>
+                    <div class="ly-item-name"><a href="<%= linkUrl + 'share/' + share._id %>" target="_blank"><%= si.name %></a></div>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+
+    </div><!-- end of g-wp -->
+
+
+</div><!-- end of g-bd -->
+<% include ../mod/mod.foot.ejs %>
+<div class="hide">
+    <% if(isSelf){ %>
+    <div id="addLinkWin">
+        <div class="u-win-tit">添加单品链接</div>
+        <div class="u-win-bd">
+            <form action="/api/share/link" method="post" class="u-fm u-fm-win j-form">
+                <div class="u-fm-i">
+                    <i class="u-fm-key">链接地址</i>
+                    <input type="text" name="url" style="width: 380px;" allow='{"require": 1, "title": "链接地址"}' />
+                    <p class="ch-info" style="padding: 3px 0 0 10px;">支持淘宝、天猫的商品。</p>
+                </div>
+                <div class="u-fm-i u-fm-btn">
+                    <input type="hidden" name="_id" value="<%= detail._id %>" />
+                    <input class="u-fm-smt" type="submit" value="保存" />
+                    <a href="javascript://" class="u-btn u-b-orange u-b-big j-submit"><i class="fa fa-save fa-16 fa-white"></i>保存</a>
+                    <a href="javascript://" class="u-btn u-b-white u-b-big j-Win-close"><i class="fa fa-save fa-16 fa-white"></i>取消</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <% } %>
+</div>
+<% include ../inc/inc.foot.ejs %>
+<% include ../mod/mod.global.ejs %>
+<script>
+    var page = {
+
+        url: {
+            share: '/api/share',
+            del: '/api/album'
+        },
+
+        init: function(o){
+            var w = this;
+
+            w._id = o._id
+
+            w.initHTML();
+            w.initEvent();
+        },
+
+        initHTML: function(){
+            var w = this;
+
+            w.wf = new UI.WaterFall({
+                el: $('#moreList')
+            });
+
+            w.addLinkwin = new UI.Window({
+                opt: {
+                    h: 234,
+                    w: 560
+                }
+            });
+            w.addLinkwin.setContent( $('#addLinkWin') );
+
+            $('.j-del').each(function(){
+                var d = $(this), postData = {};
+                postData._id = d.attr('_id');
+                postData.share_id = w._id;
+
+                d.data('opt',{
+                    type: 'delete',
+                    hideText: 1,
+                    confirm: '确定删除吗？',
+                    postData: postData,
+                    fn: function(o, dom){
+                        dom.parents('.j-delParent').remove();
+                        //window.location.reload(true);
+                    }
+                })
+            });
+
+            $('#comForm').data('opt',{
+                text: '发表成功！',
+                fn: function(){
+                    window.location.reload(true);
+                }
+            })
+        },
+
+        initEvent: function(){
+            var w = this;
+
+            $('#addLink').click(function(){
+                w.addLinkwin.open();
+                $('[name="url"]').focus();
+            })
+        }
+
+    }
+    $(function(){
+        page.init({
+            _id: '<%= detail._id %>'
+        });
+    })
+</script>
+</body>
+</html>

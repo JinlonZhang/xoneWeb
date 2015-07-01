@@ -1,0 +1,28 @@
+<div class="hide">
+    <div class="ly-lg" id="login">
+        <div class="ly-lg-tit">登录叮当街</div>
+        <div class="ly-lg-bd">
+            <div class="ly-lg-l">
+                <form action="/api/login" method="post" id="winLoginFM" class="ly-lg-fm j-form" opt='{"hideText": "1"}'>
+                    <div class="u-fm-i"><i class="u-fm-key">邮箱</i><input type="text" name="login_name" style="width: 200px;" allow='{"require": 1, "title": "邮箱"}'/></div>
+                    <div class="u-fm-i"><i class="u-fm-key">密码</i><input type="password" name="pwd" style="width: 200px;" allow='{"require": 1, "title": "密码"}'/></div>
+                    <div class="u-fm-i u-fm-btn">
+                        <input class="u-fm-smt" type="submit" value="登录" />
+                        <a href="javascript://" class="u-btn u-b-orange u-b-big j-submit">登录</a>
+
+                        <a href="<%= linkUrl %>findPwd" target="_blank">忘记密码？</a>
+                        <p style="margin-top: 15px;"><label><input type="checkbox" name="rem" value="1"/>记住我</label></p>
+                    </div>
+                </form>
+            </div>
+            <div class="ly-lg-r">
+                <p>没有帐号？<a class="a-c" href="<%= linkUrl %>reg" rel="nofllow" target="_blank">立即注册</a></p>
+                <p style="margin-top: 20px;">
+                    使用以下账号直接登录
+                    <a href="javascript://" class="g-oa-qq j-qqLogin"></a>
+                    <a href="javascript://" class="g-oa-wb j-wbLogin"></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include /inc/inc.head.ejs %>
+    <style>
+        .dt{overflow: hidden;border: #ccc 1px solid;}
+        .dt-img{width: 480px;margin-right:498px;min-height: 456px;_height:456px;border-right: #ccc 1px solid;text-align: center;background: #fcfcfc}
+        .dt-img img{max-width:450px;margin: 20px auto;border-radius: 2px;}
+        .dt-info{padding:18px 18px 0;min-height: 440px;_height:440px;width: 440px;float: right;}
+        .dt-name{margin-bottom: 10px;font-size: 20px;font-weight: normal;margin-bottom: 10px;}
+        .dt-desc{margin: 12px 0;line-height: 24px;color: #888;}
+
+
+
+        .sh-btn{margin-top: 10px;padding-top: 16px;border-top: #ccc 1px dotted;}
+
+        .ab{position:relative;height: 385px;margin: 16px 0 14px;}
+        .ab-tit{height: 40px;font:16px/40px "Microsoft YaHei","黑体ED1\4F53";}
+        .ab-panel{float:left;display:inline;width:225px; margin:0 24px 0 0;padding-bottom: 1px; background: #fff;border-radius: 3px;box-shadow: 0 0px 2px rgba(0,0,0,.3);}
+        .ab-p-tit{padding: 10px 18px;}
+        .ab-bd{position: relative;}
+        .ab-link{position: absolute;top:0;left:0;width: 100%;height: 100%;}
+        .ab-img{overflow: hidden}
+        .ab-img .f{height: 150px;width:100%;margin: 0}
+        .ab-img .f img{width: 225px;height: auto;}
+        .ab-img li{float: left;width: 55px;height:55px;margin: 1px 0 0 1px;background: #f6f6f6;overflow: hidden}
+        .ab-img li img{width: 55px;height: 55px;}
+        .ly-us{min-height: 30px;padding: 6px 0;}
+        .ly-us-i img{width: 30px;height: 30px;}
+        .ab-hot{position: absolute;top:10px;right:10px;width: 200px;height:325px; background: #f8f8f8f;}
+        .ab-hot-tit{height:30px;line-height:30px;}
+        .ab-hot-tit i{font:16px "Microsoft YaHei","黑体ED1\4F53";}
+        .ab-more{float: right;}
+        .ab-hot p{height: 28px;line-height: 28px;margin-bottom: 6px;background: #f6f6f6;padding-left: 8px;}
+    </style>
+</head>
+<body>
+
+<% include /mod/mod.head.ejs %>
+<div class="g-bd g-wp">
+    <div class="dt">
+
+        <div class="dt-info">
+            <h1 class="dt-name"><%= detail.name %></h1>
+            <% if(detail.description){ %>
+                <p class="dt-desc"><%= detail.description %></p>
+            <% } %>
+
+            <% include /mod/mod.tbk.item.ejs %>
+
+            <div class="sh-btn">
+
+                <button class="u-btn u-b-white u-b-small j-love" _url="/api/love" _id="<%= detail._id %>"><i class="ico ico-love"></i>喜欢<i class="ly-item-num j-loveNum"><%= detail.love_total == 0 ? '' : '(' + detail.love_total + ')' %></i></button>
+
+                <%
+                var shareTxt = detail.description, shareImg = detail.img.url + '!450x999.jpg';
+                if(shareTxt == "" || shareTxt == undefined){
+                    shareTxt = '哈～好喜欢这件宝贝，非常漂亮，分享给大家～～';
+                }
+
+                %>
+                <div style="float: right;width: 168px;height: 30px;">
+                    <div class="bdsharebuttonbox"><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_baidu" data-cmd="baidu" title="分享到百度搜藏"></a><a href="#" class="bds_more" data-cmd="more"></a></div>
+                    <script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"687411186","tqq":"ef72ba0dc1c9df19c5a5d0a1e8f03e01"},"bdText":"<%= shareTxt %>","bdMini":"2","bdMiniList":["qzone","tsina","weixin","renren","tqq","tqf","tsohu","t163","meilishuo","mogujie","diandian","huaban"],"bdPic":"<%= shareImg %>","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+                </div>
+            </div>
+        </div>
+
+        <div class="dt-img">
+            <img src="<%= detail.img.url %>!450x999.jpg" alt="<%= detail.name %>" />
+            <div class="dt-img-btn">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="ab">
+        <div class="ab-tit">时尚专辑</div>
+        <% albumList.forEach(function(ab){ %>
+        <div class="ab-panel">
+            <div class="ab-p-tit">
+                <a href="<%= linkUrl %>album/<%= ab.album._id %>" target="_blank"><%= ab.album.name %></a>
+            </div>
+            <div class="ab-bd">
+                <a href="<%= linkUrl %>album/<%= ab.album._id %>" target="_blank" class="ab-link"></a>
+                <ul class="ab-img">
+                    <%
+                    for(var i=0; i<=8; i++) {
+                        var src = '/src/img/s.png';
+                        if(ab.imgList[i]){
+                            src = ab.imgList[i] + (i == 0 ? '!225x150' : '!100x100');
+                        }
+                    %>
+                    <li <%= i == 0 ? 'class=f' : '' %> ><img src="<%= src %>" /></li>
+                    <% } %>
+                </ul>
+            </div>
+            <%
+                var user = ab.user;
+            %>
+            <div class="ly-us">
+                <div class="ly-us-i">
+                    <a href="<%= linkUrl %>user/<%= user._id %>" target="_blank"><img src="<%= user.avatarUrl %>!50x50" alt="<%= user.name %>" /></a>
+                    <div class="ly-us-ii ch-ells">
+                        <a href="<%= linkUrl %>user/<%= user._id %>" class="a-n" target="_blank"><%= user.name %></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+        <div class="ab-hot">
+            <div class="ab-hot-tit">
+                <i>精选</i>
+                <a class="ab-more" href="<%= linkUrl %>album" target="_blank">更多</a>
+            </div>
+            <% albumListHot.forEach(function(ab){ %>
+            <p><a href="<%= linkUrl %>album/<%= ab._id %>" target="_blank"><%= ab.name %></a></p>
+            <% }) %>
+        </div>
+    </div>
+</div>
+
+<div class="ly-item-wp" id="itemListWp">
+    <div class="ly-item g-wp">
+        <div class="ly-item-tit">
+            相关宝贝推荐
+        </div>
+
+        <div class="ly-item-list" id="itemList">
+            <% list.forEach(function(item){ %>
+            <div class="ly-item-in j-panel">
+                <div class="ly-item-img" style="height: <%= item.img.size.h %>px">
+                    <a href="<%= linkUrl + 'item/' + item._id %>" target="_blank"><img class="j-itemImg" alt="<%= item.name %>" src="<%= item.img.url %>!225x999.jpg" /></a>
+                </div>
+                <div class="ly-item-info">
+                    <div class="ly-item-btn">
+                        <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love j-love" _url="/api/love" _id="<%= item._id %>"><i class="ico ico-love ico-c-white ico-mini ico-none"></i><i class="ly-item-num j-loveNum"><%= item.love_total == 0 ? '' : '(' + item.love_total + ')' %></i></a>
+                        <div class="ly-item-price"><i class="ch-price-p">￥</i><%= item.price.toFixed(2) %></div>
+                    </div>
+                    <div class="ly-item-name"><a href="<%= linkUrl + 'item/' + item._id %>" target="_blank"><%= item.name %></a></div>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+</div>
+
+<div class="hide" id="hide">
+    <div id="itemTmp" class="ly-item-in">
+        <div class="ly-item-img">
+            <a href="javascript://" target="_blank"><img class="j-img" width="225" /></a>
+        </div>
+        <div class="ly-item-info">
+            <div class="ly-item-btn">
+                <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love j-love"><i class="ico ico-love ico-c-white ico-mini ico-none"></i><i class="ly-item-num j-loveNum"></i></a>
+                <div class="ly-item-price"><i class="ch-price-p">￥</i></div>
+            </div>
+            <div class="ly-item-name"><a href="javascript://" target="_blank"></a></div>
+        </div>
+    </div>
+</div>
+
+<% include /mod/mod.foot.ejs %>
+</body>
+<% include /inc/inc.foot.ejs %>
+<% include /mod/mod.global.ejs %>
+<script>
+    var page = {
+
+        loadFlag: false,
+        loadCount: 1,
+        url: {
+            item: '/api/itemForCategory'
+        },
+
+        init: function(){
+            var w = this;
+
+            w.pageSkip = parseInt('<%= req.query.skip || 0 %>');
+            w.linkUrl = '<%= linkUrl %>item/';
+
+            w.initHTML();
+            w.initEvent();
+        },
+
+        initHTML: function(){
+            var w = this;
+
+            w.wf = new UI.WaterFall({
+                el: $('#itemList')
+            });
+        },
+
+        initEvent: function(){
+            var w = this;
+
+            window.onscroll = Das.throttle(function(){
+                var x = $(document).scrollTop();
+
+                w.loadMore(x);
+            }, 20);
+
+        },
+
+        loadMore: function(x){
+            var w = this, height = document.body.scrollHeight, offHeight = document.body.offsetHeight;
+
+            //console && console.log(height - x - offHeight);
+            if(height - x - offHeight <= 800 && !w.loadFlag && w.loadCount <= 1){
+                w.loadFlag = true;
+                $.ajax({
+                    type: 'get',
+                    dataType: 'json',
+                    data: {skip: w.loadCount * 20 + w.pageSkip, _id: '<%= categoryId %>'},
+                    url: w.url.item,
+                    success: function(data){
+                        w.loadFlag = false;
+                        console.log(data.list);
+                        w.buildItem(data.list);
+                    }
+                })
+                w.loadCount++;
+            }
+        },
+
+        buildItem: function(list){
+            var w = this;
+
+            var items = [];
+
+            for(var i=0; i<list.length; i++){
+                var d = list[i];
+                var itemDom = $('#hide').find('#itemTmp').clone(false).removeAttr('id');
+
+                itemDom.find('.j-love').attr({'_id': d._id, '_url': '/api/love'}).bind('click', function(){ app.bind.loveClick( $(this) ) });
+                itemDom.find('.j-loveNum').text( d.love_total == 0 ? '' : '(' + d.love_total + ')' )
+                itemDom.find('.j-img').attr('src', d.img.url + '!225x999.jpg').attr('alt', d.name);
+                itemDom.find('.ly-item-price').append(d.price.toFixed(2));
+                itemDom.find('.ly-item-img').height(d.img.size.h).find('a').attr('href', w.linkUrl + d._id);
+                itemDom.find('.ly-item-name').find('a').attr('href', w.linkUrl + d._id).text(d.name);
+
+                $('#itemList').append(itemDom);
+
+                items.push(itemDom.get(0));
+            }
+
+            w.wf.buildFall( $(items) );
+        }
+    }
+    $(function(){
+        page.init();
+    })
+</script>
+</html>

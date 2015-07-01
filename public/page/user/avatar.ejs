@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../inc/inc.head.ejs %>
+    <link rel='stylesheet' href='/src/css/page/user.css' />
+    <link rel='stylesheet' href='/src/js/Jcrop/css/jquery.Jcrop.css' />
+</head>
+<body>
+<% include ../mod/mod.head.ejs %>
+<div class="g-bd us-wp">
+    <div class="g-wp">
+        <% include mod.head.ejs %>
+
+        <div class="us-bd1">
+
+            <% include mod.side.ejs %>
+
+            <div class="us-mn1" id="jcrop">
+                <div class="us-tit">
+                    <b>修改头像</b>
+                </div>
+
+                <div class="pre">
+                    <div class="pre-tit">头像预览</div>
+                    <div class="pre-img" style="width: 180px;height:180px;">
+                        <img src="" id="preview180" style="width: 180px;" />
+                    </div>
+                    <div class="pre-img" style="width: 100px;height:100px;">
+                        <img src="" id="preview100" style="width: 100px;" />
+                    </div>
+
+                    <div class="pre-img" style="width: 50px;height:50px;">
+                        <img src="" id="preview50" style="width: 50px;" />
+                    </div>
+
+                </div>
+                <div class="raw">
+                    <div id="msg" class="msg msg-warn hide"></div>
+                    <div class="raw-fm">
+                        <form action="/api/uploadAvatar" method="post" id="upload" enctype="multipart/form-data" target="ajaxIframe">
+                            <input name="img" type="file" class="us-file" onChange="$('#upload').submit()" />
+                            <a href="javascript://" class=" u-btn u-b-white j-submit us-b-file">选择照片</a>
+                            <i class="raw-tip">支持jpg、png格式的图片，文件小于500K。</i>
+                        </form>
+                    </div>
+                    <div id="jcrop-wrap" style="width:400px;height:400px;overflow: hidden;border: 1px solid #ddd">
+                        <img id="target" class="raw-bg" src="/src/img/avatar-upload.png"/>
+                    </div>
+                    <div style="margin:20px 0;text-align: left">
+                        <form action="/api/modifyAvatar" method="post" class="j-form">
+                            <div class="hide">
+                                x1<input id="x1" name="x1" size="2"/>
+                                y1<input id="y1" name="y1" size="2"/>
+                                h<input id="h" name="h" size="2"/>
+                                w<input id="w" name="w" size="2"/>
+                                cropCoe<input id="cropCoe" name="cc" size="2" />
+                            </div>
+
+                            <input class="u-fm-smt" type="submit" value="保存" />
+                            <a href="javascript://" class="u-btn u-b-orange j-submit">保存</a>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<% include ../mod/mod.foot.ejs %>
+<iframe id="ajaxIframe" class="hide" name="ajaxIframe" ></iframe>
+
+<% include ../inc/inc.foot.ejs %>
+<% include ../mod/mod.global.ejs %>
+<script type="text/javascript" src="/src/js/Jcrop/js/jquery.Jcrop.min.js" ></script>
+<script type="text/javascript" src="/src/js/page/user.avatar.js" ></script>
+<script>
+    $(function(){
+        page.init();
+    })
+</script>
+</body>
+</html>

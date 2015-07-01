@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include inc/inc.head.ejs %>
+    <style>
+        .o{font-size: 20px;height: 50px;line-height: 50px;margin-top: 160px;}
+        .l{margin-top: 10px;}
+        .ico-ok{font-size: 30px;width:30px;height:35px;color: #555;vertical-align: middle;}
+    </style>
+</head>
+<body>
+    <p class="o"><i class="ico ico-ok"></i> 登录成功!</p>
+    <p class="l"><a href="javascript://" class="a-n" id="ck">如果页面长时间没有反应，请点击这里跳转。</a></p>
+    <script>
+        window.setTimeout(function(){
+            window.opener.location.reload(true);
+            window.close();
+        }, 3000);
+        document.getElementById('ck');
+        ck.onclick = function(){
+            window.opener.location.reload(true);
+            window.close();
+        }
+    </script>
+</body>
+</html>

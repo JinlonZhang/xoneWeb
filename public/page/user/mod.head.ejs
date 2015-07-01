@@ -1,0 +1,75 @@
+
+<div class="us-cover"></div>
+<div class="us-info-w">
+
+    <div class="us-avatar">
+        <div class="us-ava">
+            <img class="img" src="<%= user.avatarUrl %>!180x180"/>
+            <% if(isSelf){ %>
+                <a href="<%= linkUrl %>user/<%= user._id %>/avatar" class="a-ava u-btn u-b-white u-b-mini">修改头像</a>
+            <% } %>
+        </div>
+        <ul class="us-fl">
+            <li>
+                <a href="/user/<%= user._id %>/follow">
+                    <p class="us-fl-num"><%= user.follow_count %></p>
+                    <p>关注</p>
+                </a>
+            </li>
+            <li class="us-fl-m">
+                <a href="/user/<%= user._id %>/fans">
+                    <p class="us-fl-num"><%= user.fans_count %></p>
+                    <p>粉丝</p>
+                </a>
+            </li>
+            <li>
+                <p class="us-fl-num ch-rosy"><%= user.love_count %></p>
+                <p class="ch-rosy">赞</p>
+            </li>
+        </ul>
+
+    </div>
+    <div class="us-info">
+        <h1><%= user.name %></h1>
+
+        <% if(!isSelf){ %>
+            <div class="us-info-btn">
+                <% if(isFollow){ %>
+                    <button class="u-btn u-b-white u-b-mini j-follow" _id="<%= user._id %>" ><i class="ico ico-check ico-mini"></i>已关注</button>
+                <% }else{ %>
+                    <button class="u-btn u-b-orange u-b-mini j-follow" _id="<%= user._id %>" ><i class="ico ico-plus2 ico-c-white ico-mini"></i>关注</button>
+                <% } %>
+            </div>
+        <% } %>
+
+        <p class="us-intro"><%= user.introduce %></p>
+
+        <div class="us-more">
+
+        </div>
+    </div>
+</div>
+
+<%
+var t = URL.parse(req.url).pathname.split('/'), cls = 'us-mu-n';
+var d = t[t.length - 1];
+
+function getCls(s){
+    return s == d ? cls : '';
+}
+%>
+<div class="us-nav">
+    <ul>
+
+        <li class="f"><a class="us-mu <%= getCls(user._id) %>" href="/user/<%= user._id %>">封面</a></li>
+        <% if(isSelf){ %>
+            <li class="f"><a class="us-mu <%= getCls('thing') %>" href="/user/<%= user._id %>/thing">动态</a></li>
+        <% } %>
+        <li><a class="us-mu <%= getCls('album') %>" href="/user/<%= user._id %>/album">专辑</a></li>
+        <li><a class="us-mu <%= getCls('love') %>" href="/user/<%= user._id %>/love">喜欢</a></li>
+        <% if(isSelf){ %>
+            <li class="r last"><a class="us-mu <%= getCls('profile') %>" href="/user/<%= user._id %>/profile"><i class="ico ico-config ico-c-grey"></i>个人设置</a></li>
+        <% } %>
+
+    </ul>
+</div>

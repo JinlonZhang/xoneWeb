@@ -1,0 +1,18 @@
+<%
+var url = item.href;
+%>
+
+<%
+var s = {
+    host: URL.parse(url).host,
+    itemId: URL.parse(url, true).query.id
+}
+%>
+<style>
+    .tbk-btn{margin-bottom: 10px;text-align: right;}
+    .tbk-btn tbbox{display: inline!important;}
+</style>
+<p><%= item.name %></p>
+<div class="tbk-btn">
+    <a target="_blank" data-type="0" biz-itemid="<%= s.itemId %>" data-tmpl="230x45" data-tmplid="225" data-rd="2" data-style="2" data-border="0" href="<%= url %>"></a>
+</div>

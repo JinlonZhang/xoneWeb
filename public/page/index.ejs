@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include /inc/inc.head.ejs %>
+        <style>
+            .ban{width: 100%;height: 310px;border:#dfdfdf 1px solid;position: relative;}
+            .ban-pic{float: right;width: 620px;height: 310px;}
+            .ban-pic img{width: 100%;height: 310px;}
+            .ban-cat{position:absolute;top:5px;left:12px;width: 320px;}
+            .ban-cat-it{height: auto;border-bottom: #ccc 1px dotted;position: relative}
+            .ban-cat-img{position: absolute;left:5px;top:5px;height: 50px;width: 50px;}
+            .ban-cat-o{position: absolute;left:65px;top:5px;font: 16px "Microsoft YaHei","黑体ED1\4F53";}
+            .ban-cat-o a{font-weight: 700;}
+            .ban-cat-t{margin:5px 0 4px 58px;overflow: hidden;height: 55px;}
+            .ban-cat-t li{float: left;height: 26px;width: auto;line-height: 26px;}
+            .ban-cat-t li.f{margin-left: 42px;}
+            .ban-cat-t li a{display: block;float: left;height: 100%;padding: 0 8px;}
+            .ban-cat-t li a:link, .ban-cat-t li a:visited{color: #666;}
+            .ban-cat-t li a:hover{color: #ff5b97;}
+            .ban-adv{position:absolute;left:12px;bottom: 14px;height: 85px;width: 320px;}
+            .ban-adv-entry{width: 150px;height: 100%;float: left;margin-right: 14px;border: #efefef 1px solid;}
+            .ban-adv .last{margin: 0;}
+
+            .rec{clear:both;margin:10px 0 30px 0;height: 384px;}
+            .rec-item-wp{width: 100%;height: 30px;}
+            .rec-item-wp li{float: left;position:relative;background: #fff;width:225px;height: 344px;overflow: hidden;margin-right: 20px;text-align: center;}
+            .rec-item-wp li.last{margin: 0}
+            .rec-item-wp li img{width: 225px;height: 300px;}
+            .rec-link{display: block;height: 300px;}
+            .rec-name{height:40px;line-height: 20px;margin: 2px 0;}
+            .rec-price-wp{position: absolute;right:5px;bottom: 50px;width:60px;height:24px;line-height:24px;text-align: center;color: #fff;}
+            .rec-price-in{position: absolute;z-index: 2;top:0;left:0;width: 100%;height: 100%;}
+            .rec-price-v{font: 14px 'tahoma';}
+            .rec-price-y{font: 10px 'arial';}
+            .rec-price-bg{position:absolute;z-index:1;top:0;left:0;width: 100%;height:100%;border-radius:3px;opacity:0.4;filter:alpha(opacity=40);background: #000;}
+
+            .cy{margin: 10px 0 50px 0;position: relative;height: auto;background: #fff;overflow: hidden;}
+            .cy-tit, .rec-tit, .ab-tit{height:40px;font:700 16px/40px "Microsoft YaHei","黑体ED1\4F53";}
+            .cy-item-wp{float:left;margin-right:280px;border: #333 0px solid;}
+            .cy-item{float:left;position:relative;width: 225px;height:225px;background:#eee;border-left: #fff 1px solid;border-bottom:#fff 1px solid;}
+            .cy-item-img{height: 100%;overflow: hidden;}
+            .cy-item-img img{width: 225px;}
+            .cy-item-name{position: absolute;z-index:100;left:0;bottom: 0;padding:68px 0 6px 0;font-size:14px;width:100%;background: url("/src/img/item-name-bg.png") left bottom repeat-x;text-align: center;color: #fff;}
+            .cy-hot{position: absolute;top:0;right: 0;width: 260px;height: 100%;background: #f6f6f6;}
+            .cy-hot-in{padding: 12px 16px;}
+            .cy-hot-tit{margin-bottom: 3px;font:700 16px "Microsoft YaHei","黑体ED1\4F53";}
+            .cy-hot-list{overflow: hidden;margin: 0px 0}
+            .cy-hot-list li{border-bottom: 1px dotted #c1c0c0;padding: 5px 0;overflow: hidden;}
+            .cy-hot-list li.last{border-bottom-width: 0}
+            .cy-hot-img{float: left;width: 100px;height: 100px;overflow: hidden;margin-right: 6px;text-align: center}
+            .cy-hot-item{float: left;width: 122px;position: relative;height: 100px;}
+            .cy-hot-item p{margin-bottom: 4px;}
+            .cy-hot-item .n{overflow: hidden;white-space:nowrap;}
+            .cy-hot-item .y{font-size: 13px;}
+            .cy-hot-item .p{color:#fb487f;font-size: 22px;}
+            .cy-hot-item .btn{position: absolute;bottom: 0;left:0;}
+
+            .ab{position:relative;height: 385px;margin: 16px 0 14px;}
+            .ab-tit{height: 40px;}
+            .ab-panel{float:left;display:inline;width:225px; margin:0 24px 0 0;padding-bottom: 1px; background: #fff;border-radius: 3px;box-shadow: 0 0px 2px rgba(0,0,0,.3);}
+            .ab-p-tit{padding: 10px 18px;}
+            .ab-bd{position: relative;}
+            .ab-link{position: absolute;top:0;left:0;width: 100%;height: 100%;}
+            .ab-img{overflow: hidden}
+            .ab-img .f{height: 150px;width:100%;margin: 0}
+            .ab-img .f img{width: 225px;height: auto;}
+            .ab-img li{float: left;width: 55px;height:55px;margin: 1px 0 0 1px;background: #f6f6f6;overflow: hidden}
+            .ab-img li img{width: 55px;height: 55px;}
+            .ly-us{min-height: 30px;padding: 6px 0;}
+            .ly-us-i img{width: 30px;height: 30px;}
+            .ab-hot{position: absolute;top:10px;right:10px;width: 200px;height:325px; background: #f8f8f8f;}
+            .ab-hot-tit{height:30px;line-height:30px;}
+            .ab-hot-tit i{font:700 16px "Microsoft YaHei","黑体ED1\4F53";}
+            .ab-more{float: right;}
+            .ab-hot p{height: 28px;line-height: 28px;margin-bottom: 6px;background: #f6f6f6;padding-left: 8px;}
+        </style>
+    </head>
+    <body>
+
+        <% include /mod/mod.head.ejs %>
+        <div class="g-bd g-wp">
+            <div class="ban">
+                <div class="ban-cat">
+                    <% categoryList.forEach(function(one){ %>
+                        <div class="ban-cat-it">
+                            <div class="ban-cat-img">
+                                <% if(one.self.img ){ %>
+                                    <img src="<%= one.self.img.url %>"  />
+                                <% } %>
+                            </div>
+                            <div class="ban-cat-o"><a href="<%= linkUrl + 'guang/' + one.self.urlName %>" target="_blank"><%= one.self.name %></a></div>
+                            <ul class="ban-cat-t">
+                                <%
+                                    one.threeList.forEach(function(three, i){
+                                        if(i > 8) return;
+                                %>
+                                    <li <%= i == 0 ? 'class=f' : '' %> ><a href="<%= linkUrl + 'guang/' + one.self.urlName %>/<%= three._id %>" target="_blank"><%= three.name %></a></li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    <% }) %>
+                </div>
+                <div class="ban-pic">
+                    <a href="<%= advertHome[0].href %>" title="<%= advertHome[0].name %>" target="_blank"><img src="<%= advertHome[0].img.url %>"/></a>
+                </div>
+                <div class="ban-adv">
+                    <% advertHomeSmall.forEach(function(entry, i){ %>
+                        <a href="<%= entry.href %>" class="ban-adv-entry <%= i == 1 ? 'last' : '' %>" target="_blank" >
+                            <img src="<%= entry.img.url %>" />
+                        </a>
+                    <% }) %>
+                </div>
+            </div>
+
+            <div class="ab">
+                <div class="ab-tit">时尚专辑</div>
+                <% albumList.forEach(function(ab){ %>
+                    <div class="ab-panel">
+                        <div class="ab-p-tit">
+                            <a href="<%= linkUrl %>album/<%= ab.album._id %>" target="_blank"><%= ab.album.name %></a>
+                        </div>
+                        <div class="ab-bd">
+                            <a href="<%= linkUrl %>album/<%= ab.album._id %>" target="_blank" class="ab-link"></a>
+                            <ul class="ab-img">
+                                <%
+                                for(var i=0; i<=8; i++) {
+                                    var src = '/src/img/s.png';
+                                    if(ab.imgList[i]){
+                                        src = ab.imgList[i] + (i == 0 ? '!225x150.jpg' : '!100x100.jpg');
+                                    }
+                                %>
+                                <li <%= i == 0 ? 'class=f' : '' %> ><img src="<%= src %>" /></li>
+                                <% } %>
+                            </ul>
+                        </div>
+                        <%
+                            var user = ab.user;
+                        %>
+                        <div class="ly-us">
+                            <div class="ly-us-i">
+                                <a href="<%= linkUrl %>user/<%= user._id %>" target="_blank"><img src="<%= user.avatarUrl %>!50x50" alt="<%= user.name %>" /></a>
+                                <div class="ly-us-ii ch-ells">
+                                    <a href="<%= linkUrl %>user/<%= user._id %>" class="a-n" target="_blank"><%= user.name %></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+                <div class="ab-hot">
+                    <div class="ab-hot-tit">
+                        <i>精选</i>
+                        <a class="ab-more" href="<%= linkUrl %>album" target="_blank">更多</a>
+                    </div>
+                    <% albumListHot.forEach(function(ab){ %>
+                        <p><a href="<%= linkUrl %>album/<%= ab._id %>" target="_blank"><%= ab.name %></a></p>
+                    <% }) %>
+                </div>
+            </div>
+
+            <div class="rec">
+                <div class="rec-tit">精品直达</div>
+                <ul class="rec-item-wp">
+                    <%
+                    recommendItem.forEach(function(entry, i){
+                        if( i > 3 ){ return false; }
+                    %>
+                        <li <%= i == 3 ? 'class=last' : '' %>>
+                            <a href="<%= linkUrl + 'item/' + entry._id %>" target="_blank" class="rec-link">
+                                <img alt="<%= entry.name %>" src="<%= entry.img.url %>!225x999.jpg" alt="<%= entry.name %>" />
+                            </a>
+                            <div class="rec-price-wp">
+                                <div class="rec-price-in">
+                                    <i class="rec-price-y">￥</i><i class="rec-price-v"><%= entry.price %></i>
+                                </div>
+                                <div class="rec-price-bg"></div>
+                            </div>
+                            <div class="rec-name"><a href="<%= linkUrl + 'item/' + entry._id %>" target="_blank"><%= entry.name %></a></div>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+            <% categoryList.forEach(function(one){ %>
+                <div class="cy">
+                    <p class="cy-tit"><%= one.self.name %></p>
+                    <div class="cy-item-wp">
+                        <% one.threeList.forEach(function(three, i){
+                            if(i > 5) return;
+                        %>
+                            <div class="cy-item">
+                                <a href="<%= linkUrl  + 'guang/' + one.self.urlName + '/' + three._id %>" target="_blank">
+                                    <% var item = categoryItem[three._id] %>
+                                    <div class="cy-item-img"><img alt="<%= item.name %>" src="<%= item.img && item.img.url %>!225x225.jpg" /></div>
+                                    <i class="cy-item-name"><%= three.name_other %></i>
+                                </a>
+                            </div>
+                        <% }) %>
+                    </div>
+                    <div class="cy-hot">
+                        <div class="cy-hot-in">
+                            <div class="cy-hot-tit">
+                                热门
+                            </div>
+                            <ul class="cy-hot-list">
+                                <% hotItem[one.self._id].forEach(function(item, i){ %>
+                                    <li class="<%= i == 3 ? 'last': '' %>" >
+                                        <a href="<%= linkUrl + 'item/' + item._id %>" target="_blank" class="cy-hot-img"><img alt="<%= item.name %>" src="<%= item.img.url %>!100x100.jpg" style="height: 100px;"/></a>
+                                        <div class="cy-hot-item">
+                                            <p class="n"><%= item.name %></p>
+                                            <p class="p"><i class="y">￥</i><%= item.price %></p>
+                                            <p class="btn"><a href="<%= linkUrl + 'item/' + item._id %>" class="u-btn u-b-small u-b-orange" target="_blank">去看看</a></p>
+                                        </div>
+                                    </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <div class="ly-item-wp">
+            <div class="ly-item g-wp">
+                <p class="ly-item-tit">每日精选</p>
+                <div class="ly-item-list" id="itemListWp">
+                    <% todayItemList.forEach(function(item){ %>
+                    <div class="ly-item-in j-panel">
+
+                        <div class="ly-item-img" style="height: <%= item.img.size.h %>px">
+                            <a href="<%= linkUrl + 'item/' + item._id %>" target="_blank"><img alt="<%= item.name %>" src="<%= item.img.url %>!225x999.jpg" /></a>
+                        </div>
+                        <div class="ly-item-info">
+                            <div class="ly-item-btn">
+                                <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love j-love" _url="/api/love" _id="<%= item._id %>"><i class="ico ico-love ico-c-white ico-mini ico-none"></i><i class="ly-item-num j-loveNum"><%= item.love_total == 0 ? '' : '(' + item.love_total + ')' %></i></a>
+                                <div class="ly-item-price"><i class="ch-price-p">￥</i><%= item.price.toFixed(2) %></div>
+                            </div>
+                            <div class="ly-item-name"><a href="<%= linkUrl + 'item/' + item._id %>" target="_blank"><%= item.name %></a></div>
+                        </div>
+                        <div class="ly-item-album">
+                            <button class="u-btn u-b-white u-b-small j-addToAlbum" _id="<%= item._id %>" _src="<%= item.img.url %>!225x999.jpg"><i class="ico ico-plus"></i>收入专辑</button>
+                        </div>
+                    </div>
+                    <% }) %>
+                </div>
+            </div>
+
+            <div class="ly-more">
+                <a href="<%= linkUrl %>guang/hot" class="u-btn u-b-big u-b-rosy" target="_blank">查看更多</a>
+            </div>
+        </div><!-- ly-item-wp -->
+
+        <div class="hide" id="hide">
+            <div id="itemTmp" class="ly-item-in">
+                <div class="ly-item-img">
+                    <a href="javascript://" target="_blank"><img class="j-img" width="225" /></a>
+                </div>
+                <div class="ly-item-info">
+                    <div class="ly-item-btn">
+                        <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love j-love"><i class="ico ico-love ico-c-white ico-mini ico-none"></i><i class="ly-item-num j-loveNum"></i></a>
+                        <div class="ly-item-price"><i class="ch-price-p">￥</i></div>
+                    </div>
+                    <div class="ly-item-name"><a href="javascript://" target="_blank"></a></div>
+                </div>
+            </div>
+        </div>
+
+        <% include /mod/mod.foot.ejs %>
+    </body>
+    <% include /inc/inc.foot.ejs %>
+    <% include /mod/mod.global.ejs %>
+
+    <script>
+
+    var page = {
+
+        loadFlag: false,
+        loadCount: 1,
+        url: {
+            item: '/api/item'
+        },
+
+        init: function(){
+            var w = this;
+
+            w.linkUrl = '<%= linkUrl %>item/';
+
+            w.initHTML();
+            w.initEvent();
+        },
+
+        initHTML: function(){
+            var w = this;
+
+            w.wf = new UI.WaterFall({
+                el: $('#itemListWp')
+            });
+
+        },
+
+        initEvent: function(){
+            var w = this;
+
+
+            //滚动
+            $(window).bind('scroll', Das.throttle(function(){
+                var x = $(document).scrollTop();
+
+                w.loadMore(x);
+            }, 20));
+        },
+
+        loadMore: function(x){
+            var w = this, height = document.body.scrollHeight, offHeight = document.body.offsetHeight;
+
+
+            if(height - x - offHeight <= 2000 && !w.loadFlag && w.loadCount <= 2){
+                w.loadFlag = true;
+
+                $.ajax({
+                    type: 'get',
+                    dataType: 'json',
+                    data: {skip: w.loadCount * 20},
+                    url: w.url.item,
+                    success: function(data){
+                        w.loadFlag = false;
+                        w.buildItem(data.list);
+                    }
+                })
+                w.loadCount++;
+            }
+        },
+
+        buildItem: function(list){
+            var w = this;
+
+            var items = [];
+
+            for(var i=0; i<list.length; i++){
+                var d = list[i];
+                var itemDom = $('#hide').find('#itemTmp').clone(false).removeAttr('id');
+
+                var href = w.linkUrl + d._id;
+                itemDom.find('.j-img').attr('src', d.img.url + '!225x999.jpg').attr('alt', d.name);
+                itemDom.find('.j-love').attr({'_id': d._id, '_url': '/api/love'}).bind('click', function(){ app.bind.loveClick( $(this) ) });
+                itemDom.find('.j-loveNum').text( d.love_total == 0 ? '' : '(' + d.love_total + ')' )
+                itemDom.find('.ly-item-price').append(d.price.toFixed(2));
+                itemDom.find('.ly-item-img').height(d.img.size.h).find('a').attr('href', href);
+                itemDom.find('.ly-item-name').find('a').attr('href', href).text(d.name);
+
+                $('#itemListWp').append(itemDom);
+
+                items.push(itemDom.get(0));
+            }
+
+            w.wf.buildFall( $(items) );
+
+        }
+    }
+    $(function(){
+
+        page.init();
+    })
+
+    </script>
+</html>

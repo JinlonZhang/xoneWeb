@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../inc/inc.head.ejs %>
+    <style>
+        .ab-wp{min-height: 800px;_height:800px;}
+        .ab-bar{margin-bottom: 25px;}
+        .ab{overflow: hidden;}
+        .ab-panel{float:left;display:inline;width:225px; margin:0 15px 20px 0;padding-bottom: 1px; background: #fff;border-radius: 3px;box-shadow: 0 0px 2px rgba(0,0,0,.3);}
+        .ab-tit{padding: 10px 18px;}
+        .ab-tit p{line-height: 20px;color: #999;margin-top: 5px;}
+        .ab-bd{position: relative;}
+        .ab-link{position: absolute;top:0;left:0;width: 100%;height: 100%;}
+        .ab-img{overflow: hidden}
+        .ab-img .f{height: 150px;width:100%;margin: 0}
+        .ab-img .f img{width: 225px;height: auto;}
+        .ab-img li{float: left;width: 55px;height:55px;margin: 1px 0 0 1px;background: #f6f6f6;overflow: hidden}
+        .ab-img li img{width: 55px;height: 55px;}
+    </style>
+</head>
+<body>
+<% include ../mod/mod.head.ejs %>
+<div class="g-bd ab-wp us-wp">
+    <div class="g-wp">
+        <div class="ab">
+
+            <% list.forEach(function(ab){ %>
+            <div class="ab-panel">
+                <div class="ab-tit">
+                    <a href="<%= linkUrl %>album/<%= ab.album._id %>" target="_blank"><%= ab.album.name %></a>
+                </div>
+                <div class="ab-bd">
+                    <a href="<%= linkUrl %>album/<%= ab.album._id %>" target="_blank" class="ab-link"></a>
+                    <ul class="ab-img">
+                        <%
+                        for(var i=0; i<=8; i++) {
+                            var src = '/src/img/s.png';
+                            if(ab.imgList[i]){
+                                src = ab.imgList[i] + (i == 0 ? '!225x150.jpg' : '!100x100.jpg');
+                            }
+                        %>
+                        <li <%= i == 0 ? 'class=f' : '' %> ><img src="<%= src %>" /></li>
+                        <% } %>
+                    </ul>
+                </div>
+                <%
+                    var user = ab.user;
+                %>
+                <div class="ly-us">
+                    <div class="ly-us-i">
+                        <a href="<%= linkUrl %>user/<%= user._id %>" target="_blank"><img src="<%= user.avatarUrl%>!50x50" alt="<%= user.name %>" /></a>
+                        <div class="ly-us-ii ch-ells">
+                            <a href="<%= linkUrl %>user/<%= user._id %>" class="a-n" target="_blank"><%= user.name %></a>
+                        </div>
+                        <div class="ly-us-btn">
+                            <% if(user.isFollow == true){ %>
+                                <button class="u-btn u-b-white u-b-mini j-follow" _id="<%= user._id %>"><i class="ico ico-check ico-mini"></i>已关注</button>
+                            <% }else if(user.isFollow == false){ %>
+                                <button class="u-btn u-b-orange u-b-mini j-follow" _id="<%= user._id %>"><i class="ico ico-plus2 ico-c-white ico-mini"></i>关注</button>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+
+</div>
+<% include ../mod/mod.pager.ejs %>
+<% include ../mod/mod.foot.ejs %>
+<% include ../inc/inc.foot.ejs %>
+<% include ../mod/mod.global.ejs %>
+</body>
+</html>

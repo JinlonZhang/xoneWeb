@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../inc/inc.head.ejs %>
+    <style>
+        .ad-us{height: 22px;}
+        .ad-bar{margin-bottom: 20px;overflow: hidden;}
+        .ad-name{float: left;margin-right: 20px;font-size: 24px;height:30px;color: #666;font-weight: normal;}
+        .ad-desc{padding-top: 8px;line-height: 18px;clear: both;}
+        .desc{margin: 0 10px;}
+        .ad-close{position: absolute;top:-12px;right:-12px;width: 28px;height: 28px;line-height:28px;text-align:center;font-size:20px;background: #ddd;text-align: center;border-radius: 50%;}
+        .ad-close:hover{background: red;color: #fff;text-decoration: none;}
+
+        .ad-bd{margin-top: 16px;}
+
+        .ad-more{padding:15px;}
+        .ad-m-us{height: 50px;position: relative;}
+        .ad-m-name{position: absolute;top:0px;left: 60px;}
+        .ad-m-tit{background: #f8f8f8;height: 30px;line-height: 30px;margin-top: 20px;padding: 0 6px;}
+        .ad-m-tit a{float: right;}
+        .ad-m-list{overflow: hidden;width: 100%;}
+        .ad-m-list li{height: 28px;line-height: 28px;background: #fefefe;border:#e9e9e9 1px solid;margin-bottom: 8px;border-radius: 3px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .ad-m-list li a{padding: 0 6px;display: block;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .ad-m-list li a:hover{text-decoration: none;background: #ff9bc0;color: #fff;}
+    </style>
+</head>
+<body>
+<% include ../mod/mod.head.ejs %>
+<div class="g-bd us-wp">
+    <div class="g-wp">
+        <div class="ad-us">
+
+            <a href="<%= linkUrl %>user/<%= user._id %>" class="a-n" target="_blank"><%= user.name %></a>的专辑
+        </div>
+
+        <div class="ad-bd">
+            <div class="ad-bar">
+                <h1 class="ad-name"><%= detail.name %></h1>
+                <% if(isSelf){ %>
+                    <button class="u-btn u-b-white u-b-small" id="edit"><i class="ico ico-pencil ico-c-green"></i>编辑</button>
+                    <button class="u-btn u-b-white u-b-small" id="del"><i class="ico ico-remove ico-c-red"></i>删除</button>
+                <% } %>
+                <% if(detail.description){ %>
+                    <div class="ad-desc"><i class="ico ico-q-l ico-none ico-18"></i><i class="desc"><%= detail.description %></i><i class="ico ico-q-r ico-none ico-18"></i></div>
+                <% } %>
+
+                <%
+                    if(list.length > 0){
+                        var shareTxt = detail.description, shareImg = list[0].imgs[0].url + '!440x999';
+                        if(shareTxt == "" || shareTxt == undefined){
+                            shareTxt = '推荐' + detail.name + '的搭配。';
+                        }
+                %>
+
+
+                    <div style="float: right;width: 168px;height: 30px;">
+                        <div class="bdsharebuttonbox"><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_baidu" data-cmd="baidu" title="分享到百度搜藏"></a><a href="#" class="bds_more" data-cmd="more"></a></div>
+                        <script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"687411186","tqq":"ef72ba0dc1c9df19c5a5d0a1e8f03e01"},"bdText":"<%= shareTxt %>","bdMini":"2","bdMiniList":["qzone","tsina","weixin","renren","tqq","tqf","tsohu","t163","meilishuo","mogujie","diandian","huaban"],"bdPic":"<%= shareImg %>","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="ly-item-list" id="shareList">
+                <div class="ly-item-in j-panel-fix">
+                    <div class="ad-more">
+                        <div class="ad-m-us">
+                            <img src="<%= user.avatarUrl %>!50x50" />
+                            <p class="ad-m-name"><a class="a-n" href="<%= linkUrl %>user/<%= user.id %>" target="_blank"><%= user.name %></a></p>
+                        </div>
+                        <div class="ad-m-tit">
+                            她的更多专辑
+                            <a href="<%= linkUrl %>user/<%= user.id %>/album" target="_blank">查看全部</a>
+                        </div>
+                        <ul class="ad-m-list">
+                            <% moreList.forEach(function(album){ %>
+                                <li><a href="<%= linkUrl %>album/<%= album.id %>" target="_blank" title="<%= album.name %>"><%= album.name %></a></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </div>
+                <% list.forEach(function(bb){ %>
+                <div class="ly-item-in j-panel">
+                    <% if(isSelf){ %>
+                        <a href="javascript://" class="ico ico-close ico-none ad-close j-shareDel" _id="<%= bb._id %>" _url="<%= bb.del_api %>"></a>
+                    <% } %>
+                    <div class="ly-item-img ad-share-img">
+                        <a href="<%= linkUrl + bb.link + bb._id %>" target="_blank">
+                            <% var img = bb.imgs[0]; %>
+                            <img class="j-itemImg" src="<%= img.url %>!225x999.jpg" alt="<%= bb.name != '' ? bb.name : '' %>" style="height: <%= Math.floor(img.size.h) %>px"/>
+
+                        </a>
+                    </div>
+                    <div class="ly-item-info">
+                        <div class="ly-item-btn">
+                            <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love j-love" _url="<%= bb.love_api %>" _id="<%= bb._id %>"><i class="ico ico-thumbs-up ico-c-white ico-mini ico-none"></i><i class="ly-item-num j-loveNum"><%= bb.love_total == 0 ? '' : '(' + bb.love_total + ')' %></i></a>
+                            <% if(bb.price != 0 && bb.price != undefined){ %>
+                                <div class="ly-item-price"><i class="ch-price-p">￥</i><%= bb.price.toFixed(2) %></div>
+                            <% } %>
+                        </div>
+                        <% if(bb.name != ''){ %>
+                            <div class="ly-item-name">
+                                <%= bb.name %> <a href="<%= linkUrl %>album/<%= detail.id%>">#<%= detail.name %>#</a>
+                            </div>
+                        <% } %>
+                        <% if(bb.description != ''){ %>
+                            <div class="ly-item-name">
+                                <%= bb.description %>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+                <% })%>
+            </div>
+
+            <% if(isItem){ %>
+                <div class="ly-more">
+                    <a href="<%= linkUrl %>guang/hot" class="u-btn u-b-big u-b-rosy" target="_blank">查看更多</a>
+                </div>
+            <% } %>
+        </div>
+
+    </div>
+</div>
+<% include ../mod/mod.pager.ejs %>
+<% include ../mod/mod.foot.ejs %>
+<% include ../inc/inc.foot.ejs %>
+<% include ../mod/mod.global.ejs %>
+<div class="hide">
+    <% if(isSelf){ %>
+        <div class="ab-add" id="editWin">
+            <div class="u-win-tit">编辑专辑</div>
+            <div class="u-win-bd">
+                <form action="/api/album" method="post" class="u-fm u-fm-win j-form">
+                    <div class="u-fm-i">
+                        <i class="u-fm-key">名称</i>
+                        <input type="text" name="name" style="width: 300px;" value="<%= detail.name %>"/>
+                    </div>
+                    <div class="u-fm-i">
+                        <i class="u-fm-key">描述</i>
+                        <textarea name="description" style="width: 350px;height: 80px;"><%= detail.description %></textarea>
+                    </div>
+                    <div class="u-fm-i u-fm-btn">
+                        <input type="hidden" name="_id" value="<%= detail._id %>" />
+                        <input class="u-fm-smt" type="submit" value="保存" />
+                        <a href="javascript://" class="u-btn u-b-orange u-b-big j-submit"><i class="fa fa-save fa-16 fa-white"></i>保存</a>
+                        <a href="javascript://" class="u-btn u-b-white u-b-big j-Win-close"><i class="fa fa-save fa-16 fa-white"></i>取消</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    <% } %>
+</div>
+<script>
+    var page = {
+
+        url: {
+            share: '/api/share',
+            delShare: '/api/share',
+            del: '/api/album',
+            more: '/api/albumForDetail'
+        },
+
+        init: function(o){
+            var w = this;
+
+            w._id = o._id;
+            w.author_id = o.author_id;
+
+            w.initHTML();
+            w.initEvent();
+        },
+
+        initHTML: function(){
+            var w = this;
+
+            w.wf = new UI.WaterFall({
+                el: $('#shareList')
+            });
+
+            w.win = new UI.Window({
+                opt: {
+                    h: 330,
+                    w: 560
+                }
+            });
+            w.win.setContent( $('#editWin') );
+        },
+
+        initEvent: function(){
+            var w = this;
+
+            $('#edit').click(function(){
+                w.win.open();
+            });
+
+            $('#del').click(function(){
+                var d = $(this);
+                d.data('opt', {
+                    hideText: 1,
+                    fn: function(){
+                        window.location.href = '/user/' + w.author_id + '/album';
+                    }
+                })
+                if(window.confirm('删除专辑，专辑里的照片都会被删除！\n\n确定删除？')){
+                    $.ajax({
+                        type: 'delete',
+                        url: w.url.del,
+                        data: {_id: w._id},
+                        dataType: 'json',
+                        success: function(o){
+                            app.common.ajaxCallBack(o, d);
+                        }
+                    })
+                }
+            });
+
+            $('.j-shareDel').click(function(){
+                var d = $(this), _id = d.attr('_id'), url = d.attr('_url');
+                d.data('opt', {
+                    text: '删除成功！',
+                    fn: function(){
+                        window.location.reload(true);
+                    }
+                });
+
+                if(window.confirm('确定删除？')){
+                    $.ajax({
+                        type: 'delete',
+                        url: url,
+                        data: {_id: _id, album_id: w._id},
+                        dataType: 'json',
+                        success: function(o){
+                            app.common.ajaxCallBack(o, d);
+                        }
+                    })
+                }
+            })
+
+
+            window.onscroll = Das.throttle(function(){
+                var x = $(document).scrollTop();
+
+                w.loadMore(x);
+            }, 20);
+
+        },
+
+        loadMore: function(){
+            var w = this;
+
+
+        }
+
+    }
+    $(function(){
+        page.init({
+            _id: '<%= detail._id %>',
+            author_id: '<%= user._id %>'
+        });
+    })
+</script>
+</body>
+</html>

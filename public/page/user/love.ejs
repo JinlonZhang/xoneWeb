@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../inc/inc.head.ejs %>
+    <link rel='stylesheet' href='/src/css/page/user.css' />
+</head>
+<body>
+<% include ../mod/mod.head.ejs %>
+<div class="g-bd us-wp">
+    <div class="g-wp">
+        <% include mod.head.ejs %>
+
+        <div class="us-mn-all" id="itemListWp">
+
+            <div class="ly-item g-wp">
+
+                <div class="ly-item-list" id="itemList">
+                    <% itemList.forEach(function(item){ %>
+                    <div class="ly-item-in j-panel">
+                        <div class="ly-item-img" style="height: <%= item.img.size.h %>px">
+                            <a href="<%= linkUrl + 'item/' + item._id %>" target="_blank"><img alt="<%= item.name %>" src="<%= item.img.url %>!225x999.jpg" /></a>
+                        </div>
+                        <div class="ly-item-info">
+                            <div class="ly-item-btn">
+                                <% if(isSelf){ %>
+                                    <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love j-love" _url="/api/love" _id="<%= item._id %>"><i class="ico ico-love ico-c-white ico-mini ico-none"></i> 取消</a>
+                                <% }else{ %>
+                                    <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love j-love" _url="/api/love" _id="<%= item._id %>"><i class="ico ico-love ico-c-white ico-mini ico-none"></i><i class="ly-item-num j-loveNum"><%= item.love_total == 0 ? '' : '(' + item.love_total + ')' %></i></a>
+                                <% } %>
+                                <div class="ly-item-price"><i class="ch-price-p">￥</i><%= item.price.toFixed(2) %></div>
+                            </div>
+                            <div class="ly-item-name"><a href="<%= linkUrl + 'item/' + item._id %>" target="_blank"><%= item.name %></a></div>
+                        </div>
+                    </div>
+                    <% }) %>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <% include ../mod/mod.foot.ejs %>
+</div>
+<% include ../inc/inc.foot.ejs %>
+<% include ../mod/mod.global.ejs %>
+<script>
+    var page = {
+
+        loadFlag: false,
+        loadCount: 1,
+        url: {
+            item: '/api/itemForCategory'
+        },
+
+        init: function(){
+            var w = this;
+
+            w.pageSkip = parseInt('<%= req.query.skip || 0 %>');
+            w.linkUrl = '<%= linkUrl %>item/';
+
+            w.initHTML();
+            w.initEvent();
+        },
+
+        initHTML: function(){
+            var w = this;
+
+            w.wf = new UI.WaterFall({
+                el: $('#itemList')
+            });
+
+        },
+
+        initEvent: function(){
+            var w = this;
+            /*
+            window.onscroll = Das.throttle(function(){
+                var x = $(document).scrollTop();
+
+                w.loadMore(x);
+            }, 20);
+            */
+        },
+
+        loadMore: function(x){
+            var w = this, height = document.body.scrollHeight, offHeight = document.body.offsetHeight;
+
+            console && console.log(height - x - offHeight);
+            if(height - x - offHeight <= 1500 && !w.loadFlag && w.loadCount <= 3){
+                w.loadFlag = true;
+                $.ajax({
+                    type: 'get',
+                    dataType: 'json',
+                    data: {skip: w.loadCount * 20 + w.pageSkip},
+                    url: w.url.item,
+                    success: function(data){
+                        w.loadFlag = false;
+                        w.buildItem(data.list);
+                    }
+                })
+                w.loadCount++;
+            }
+        },
+
+        buildItem: function(list){
+            var w = this;
+
+            var items = [];
+
+            for(var i=0; i<list.length; i++){
+                var d = list[i];
+                var itemDom = $('#hide').find('#itemTmp').clone(false).removeAttr('id');
+
+                itemDom.find('.j-img').attr('src', d.img.url + '!225x999.jpg').attr('alt', d.name);
+                itemDom.find('.ly-item-price').append(d.price.toFixed(2));
+                itemDom.find('.ly-item-img').height(d.img.size.h).find('a').attr('href', w.linkUrl + d._id);
+                itemDom.find('.ly-item-name').find('a').attr('href', w.linkUrl + d._id).text(d.name);
+
+                $('#itemList').append(itemDom);
+
+                items.push(itemDom.get(0));
+            }
+            window.setTimeout(function(){
+                w.wf.buildFall( $(items) );
+            },10);
+        }
+    }
+    $(function(){
+        page.init();
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+    "name"       : "web",
+    "script"     : "app.js",
+    "error_file" : "/data/log/web-err.log",
+    "out_file"   : "/data/log/web-out.log",
+    "pid_file"   : "/data/log/web.pid",
+    "exec_mode"  : "fork_mode"
+}

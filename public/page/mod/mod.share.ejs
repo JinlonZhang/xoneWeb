@@ -1,0 +1,104 @@
+<style>
+    .share{}
+    .share-bd{margin-top: 25px}
+    .share-img{overflow:hidden;margin: 20px 0;padding-top:10px;}
+    .share-img-fm{width: 100px;height: 100px;float: left;margin:0 25px 18px 0;position: relative;}
+    .share-img-fm .close{width: 24px;height: 24px;line-height:24px;text-align:center;border-radius: 50%; position: absolute;top:-10px;right:-10px;font-size: 16px;color: #fff;background: #666;}
+    .share-img-fm .close:hover{text-decoration: none;color: #fff;background: red}
+    .share-img-fm form{height: 100%;width: 100%;float: left;}
+    .share-img-fm .file{position: absolute;left: 0;top: 0;width: 100%;height: 100%;opacity: 0;cursor: pointer;}
+    .share-img-fm .link{border: #ddd 1px dotted;border-radius: 3px;display: block;width: 100%;height: 100%;line-height: 100px;text-align: center;font-size: 60px;color: #888}
+    .share-img-fm .link:hover{text-decoration: none;}
+    .share-lk{margin-bottom: 15px;}
+    .share-lk li{height: 30px;line-height:30px;position: relative;}
+    .share-lk a{float:left;width: 420px;}
+    .share-lk .u-btn{float: right;}
+    .share-link-add{margin-bottom: 20px;}
+    .share-desc{margin-bottom: 20px;}
+
+    .si-name{font:700 16px "Microsoft YaHei","黑体ED1\4F53";padding-bottom: 5px!important;}
+    .si-img{overflow: hidden}
+    .si-img li{float: left;width: 100px;height: 100px;text-align: center;background: #fff;margin: 0 20px 16px 0}
+</style>
+<div class="hide" id="hideShare">
+    <div id="SI">
+        <div class="u-win-tit">发布宝贝</div>
+        <div class="u-win-bd" id="SI_s1">
+            <form action="/api/share/linkInfo" method="post" class="u-fm u-fm-win j-form" id="SI_link">
+                <div class="u-fm-i">
+                    <i class="u-fm-key">宝贝链接</i>
+                    <input type="text" id="SI_url" name="url" style="width: 380px;" allow='{"require": 1, "title": "链接地址"}' autocomplete="off">
+                    <p class="u-fm-tip ch-info" class="u-fm-tip">支持淘宝、天猫的商品。</p>
+                </div>
+                <div class="u-fm-i u-fm-btn">
+                    <input class="u-fm-smt" type="submit" value="保存">
+                    <a href="javascript://" class="u-btn u-b-orange u-b-big j-submit" ><i class="fa fa-save fa-16 fa-white"></i>确定</a>
+                    <a href="javascript://" class="u-btn u-b-white u-b-big j-Win-close" ><i class="fa fa-cancle fa-16 fa-white"></i>取消</a>
+                </div>
+            </form>
+        </div>
+        <div class="u-win-bd" id="SI_s2" style="display: none;">
+            <form action="/api/shareByUser" method="post" class="u-fm u-fm-win u-fm-full j-form" id="SI_submit">
+
+                <div class="u-fm-i si-name ch-ells" id="SI_name"></div>
+                <div class="u-fm-i">
+                    <ul class="si-img" id="SI_img"></ul>
+                </div>
+                <div class="u-fm-i">
+                    <select name="album_id" id="SI_album">
+                        <option>默认专辑</option>
+                    </select>
+                </div>
+                <div class="u-fm-i">
+                    <textarea name="description" placeholder="随便写点什么，评论一下吧：）" style="width: 486px;height: 60px;"></textarea>
+                </div>
+                <div class="u-fm-i u-fm-btn">
+                    <input type="hidden" name="itemId" />
+                    <input type="hidden" name="name" />
+                    <input type="hidden" name="href" />
+                    <input type="hidden" name="price" />
+                    <input type="hidden" name="type" value="0">
+                    <input class="u-fm-smt" type="submit" value="保存">
+                    <a href="javascript://" class="u-btn u-b-orange u-b-big j-submit" ><i class="fa fa-save fa-16 fa-white"></i>保存</a>
+                    <a href="javascript://" class="u-btn u-b-white u-b-big j-Win-close" ><i class="fa fa-cancle fa-16 fa-white"></i>取消</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="share" id="share">
+        <div class="u-win-tit">分享照片</div>
+        <div class="share-bd">
+            <div class="">
+                专辑
+                <select id="selectAlbumId"></select>
+            </div>
+            <div class="share-img j-shareBd"></div>
+
+            <ul class="share-lk" id="shLinkAppend"></ul>
+
+            <div class="share-link-add j-linkBd">
+                <input type="text" id="sh_link" style="width: 420px;" placeholder="分享单品链接，更容易得到推荐哦！"/><button id="sh_addLink" class="u-btn u-b-white" type="button">添加</button>
+            </div>
+
+            <form action="/api/share" method="post" class="j-form">
+
+                <div class="share-desc">
+                    <textarea name="description" style="width: 94%;height: 60px;" placeholder="说说你的装扮（晒货）心得，给小伙伴们一些穿搭和购物的建议吧"></textarea>
+                </div>
+                <div class="share-btn">
+                    <button type="submit" class="u-btn u-b-orange" >保存</button>
+                    <input name="album_id" id="albumId" type="hidden" />
+                    <input name="type" id="shType" type="hidden" />
+                </div>
+                <div class="hide" id="imgHide"></div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        User.Share.init();
+        User.Share.BB.init();
+    })
+</script>

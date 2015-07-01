@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include /inc/inc.head.ejs %>
+    <link rel='stylesheet' href='/src/css/page/reg.css' />
+</head>
+<body>
+<% include /mod/mod.head.ejs %>
+<div class="reg-c">
+
+    <div class="reg-fm-w g-wp">
+        <div class="reg-sd">
+
+        </div>
+        <div class="reg-mn">
+            <div class="u-fm-tit">找回密码</div>
+
+            <form action="/api/findPwd" method="post" class="u-fm j-form">
+                <div class="msg msg-info" id="msg"></div>
+                <div class="u-fm-i"><i class="u-fm-key">注册邮箱</i><input type="text" name="login_name" style="width: 260px;" allow='{"require": 1, "title": "注册邮箱"}'/></div>
+
+                <div class="u-fm-i u-fm-btn">
+                    <input class="u-fm-smt" type="submit" value="确定" />
+                    <a href="javascript://" class="u-btn u-b-orange u-b-big j-submit">确定</a>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<% include /mod/mod.foot.ejs %>
+</body>
+<% include /inc/inc.foot.ejs %>
+<script>
+    $(function(){
+        $('.j-form').data('opt', {
+            hideText: 1,
+            fn: function(o){
+                $('#msg').text('验证邮件已发往你的电子邮箱，请点击邮件中的链接完成验证！').show();
+            }
+        });
+    })
+</script>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../inc/inc.head.ejs %>
+</head>
+<body>
+<% include ../mod/mod.head.ejs %>
+<div class="g-bd us-wp">
+    <div class="g-wp">
+        <% include mod.head.ejs %>
+
+        <div class="us-mn-all">
+
+            <div class="ly-item-list" id="list">
+                <% shareList.forEach(function(share){ %>
+                <div class="ly-item-in j-panel">
+                    <div class="ly-item-img us-share-img">
+                        <a href="<%= linkUrl %>share/<%= share._id %>" target="_blank">
+                            <% var img = share.imgs[0] %>
+                            <img class="j-itemImg" src="<%= img.url %>!225x999.jpg" style="height: <%= img.size.h %>px"/>
+
+                        </a>
+                    </div>
+                    <div class="ly-item-info">
+                        <div class="ly-item-btn">
+                            <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love j-love" _url="/api/share/love" _id="<%= share._id %>"><i class="ico ico-thumbs-up ico-c-white ico-small ico-none"></i><i class="ly-item-num j-loveNum"><%= share.love_total == 0 ? '' : '(' + share.love_total + ')' %></i></a>
+                        </div>
+                        <div class="ly-item-name">
+                            <%= share.description ? share.description : "" %>
+                            <i class="ch-info"><%= dateFormat(share.date) %></i>
+                        </div>
+                    </div>
+
+                </div>
+                <% })%>
+            </div>
+
+        </div>
+    </div>
+</div>
+<% include ../mod/mod.foot.ejs %>
+<% include ../inc/inc.foot.ejs %>
+<% include ../mod/mod.global.ejs %>
+<script>
+    var page = {
+
+        url: {
+            share: '/api/share',
+            del: '/api/album'
+        },
+
+        init: function(o){
+            var w = this;
+
+            w.initHTML();
+            w.initEvent();
+        },
+
+        initHTML: function(){
+            var w = this;
+
+            w.wf = new UI.WaterFall({
+                el: $('#list')
+            });
+        },
+
+        initEvent: function(){
+            var w = this;
+
+            /*
+             window.onscroll = Das.throttle(function(){
+             var x = $(document).scrollTop();
+
+             w.loadMore(x);
+             }, 20);
+             */
+        }
+
+    }
+    $(function(){
+        page.init();
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+
+.u-win-mask{position: absolute;z-index:500;left:0;top:0;width: 100%;height: 100%;background: #333;opacity: 0.3;filter:alpha(opacity=30);}
+.u-win{text-align:left;position: absolute;z-index:550;left:50%;border: #aaa 1px solid;background: #fff;border-radius: 3px;box-shadow: 0 1px 12px rgba(0,0,0,.3)}
+.u-win-cont{padding: 25px 30px;}
+.u-win-tit{font-size: 20px;}
+.u-win-bd{margin-top: 25px;}
+.u-win-close{position: absolute;right: 10px;top:10px;font-size:30px;width: 30px;height: 30px;}
+.u-win-close:link, .u-win-close:active{color: #888;}
+.u-win-close:hover{color:#444;text-decoration: none;}

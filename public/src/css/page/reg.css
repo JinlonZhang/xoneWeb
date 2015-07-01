@@ -1,0 +1,11 @@
+/**
+ * 注册页面
+ * by allen on 2014-07-06
+ **/
+
+.reg-c{background: #f9f9f9;width: 100%;padding:50px 0 40px 0;min-height: 600px;height: auto;_height:600px;}
+.reg-fm-w{text-align:left;background:#fff;margin:0 auto;border: 1px solid #e7e7e7;box-shadow: 0 0 5px #c7c5c5;border-radius: 4px;}
+.reg-mn{margin-right:300px;padding:20px 0; min-height: 500px;}
+.reg-sd{float:right;width:300px;padding-top: 50px;}
+.reg-sd p{margin-bottom: 20px;}
+.reg-foot{}

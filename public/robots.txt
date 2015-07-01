@@ -1,0 +1,11 @@
+#
+# robots.txt for DingDangJie 1.1
+#
+User-agent: *
+Disallow: /go/
+Disallow: /sgo/
+Disallow: /api/
+Disallow: /build/js/
+Disallow: /build/css/
+Disallow: /src/img/
+Sitemap: http://www.dingdangjie.cn/sitemap.xml

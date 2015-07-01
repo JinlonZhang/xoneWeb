@@ -1,0 +1,16 @@
+<%
+var t = URL.parse(req.url).pathname.split('/');
+var d = t[t.length - 1];
+%>
+
+<div class="us-sd1">
+    <div class="us-m">
+        <ul class="us-m-menu">
+            <li><a <%= d == 'profile' ? 'class=now' : ''%> href="<%= linkUrl %>user/<%= user._id %>/profile">基本信息</a></li>
+            <% if(user.uuid.substr(0, 3) == 'ddj'){ %>
+                <li><a <%= d == 'pwd' ? 'class=now' : ''%> href="<%= linkUrl %>user/<%= user._id %>/pwd">修改密码</a></li>
+            <% } %>
+            <li><a <%= d == 'avatar' ? 'class=now' : ''%> href="<%= linkUrl %>user/<%= user._id %>/avatar">修改头像</a></li>
+        </ul>
+    </div>
+</div>

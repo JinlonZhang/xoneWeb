@@ -1,0 +1,32 @@
+{
+  "name": "xone",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node admin.js"
+  },
+  "dependencies": {
+    "express": "3.5.3",
+    "ejs": "*",
+    "xss": "*",
+    "mongoose": "3.6.20",
+    "async": "*",
+    "moment": "2.2.1",
+    "validator": "2.0.0",
+    "underscore": "*",
+    "connect-mongo": "0.3.3",
+    "gm": "1.16.0",
+    "nodemailer": "*",
+    "later": "*",
+    "cheerio": "*",
+    "iconv-lite": "*",
+    "xml": "*"
+  },
+    "devDependencies": {
+        "gulp": "3.8.5",
+        "gulp-util": "*",
+        "gulp-uglify": "*",
+        "gulp-minify-css": "*",
+        "gulp-concat": "*"
+    }
+}

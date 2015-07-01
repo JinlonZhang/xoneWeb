@@ -1,0 +1,24 @@
+<style>
+    .ia{}
+    .ia-bd{position: relative;width: 100%;height: 160px;margin-top: 10px;}
+    .ia-img{position:absolute;top:5px;left:5px;width: 150px;height: 150px;overflow: hidden;}
+    .ia-img img{width: 150px;height: auto;}
+    .ia-con{position: absolute;top:10px;left: 175px;}
+    .ia-btn{margin-top: 15px;}
+</style>
+<div class="hide" id="hideAddToAlbum">
+    <div class="ia" id="addToAlbum">
+        <div class="u-win-tit">收入专辑</div>
+        <div class="ia-bd">
+            <div class="ia-img"><img id="IA-img" /></div>
+
+            <div class="ia-con">
+                <form action="/api/itemToAlbum" method="post" id="IA-form">
+                    <p><select name="album_id" id="IA-album"></select></p>
+                    <p class="ia-btn"><button class="u-btn u-b-orange" >确定</button></p>
+                    <input type="hidden" name="item_id" id="IA-item" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

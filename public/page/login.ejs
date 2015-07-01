@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include /inc/inc.head.ejs %>
+</head>
+<body>
+<% include /mod/mod.head.ejs %>
+<div class="reg-c">
+
+    <div class="reg-fm-w g-wp">
+        <div class="reg-sd">
+            <p>
+                没有帐号？<a class="a-c" href="<%= linkUrl %>reg">立即注册</a>
+            </p>
+            <p>
+                使用以下账号直接登录
+                <a href="javascript://" class="g-oa-qq j-qqLogin"></a>
+                <a href="javascript://" class="g-oa-wb j-wbLogin"></a>
+            </p>
+        </div>
+        <div class="reg-mn">
+            <div class="u-fm-tit">登录</div>
+            <form action="/api/login" method="post" class="u-fm j-form">
+                <div class="msg msg-warn" id="msg"></div>
+                <div class="u-fm-i"><i class="u-fm-key">邮箱</i><input type="text" name="login_name" style="width: 260px;" allow='{"require": 1, "title": "邮箱"}'/></div>
+                <div class="u-fm-i"><i class="u-fm-key">密码</i><input type="password" name="pwd" allow='{"require": 1, "title": "密码"}'/>
+                    <a href="<%= linkUrl %>findPwd" target="_blank">忘记密码？</a>
+                </div>
+
+                <div class="u-fm-i u-fm-btn">
+                    <input class="u-fm-smt" type="submit" value="登录" />
+                    <a href="javascript://" class="u-btn u-b-orange u-b-big j-submit">登录</a>
+                    <p style="margin-top: 15px;"><label><input type="checkbox" name="rem" value="1"/>记住我</label>
+
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<% include /mod/mod.foot.ejs %>
+</body>
+<% include /inc/inc.foot.ejs %>
+<script>
+    $(function(){
+        $('.j-form').data('opt', {
+            hideText: 1,
+            fn: function(){
+                window.location.href = '/';
+            }
+        });
+    })
+</script>
+</html>

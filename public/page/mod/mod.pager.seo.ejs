@@ -1,0 +1,137 @@
+<%
+/**
+ * 分页
+ * Created by allenxu on 14-4-2.
+ **/
+%>
+<%
+    var pager = {
+        init: function(o){
+            var w = this;
+
+            w.skip = o.skip || 0;
+            w.limit = o.limit || 20;
+            w.total = o.total;
+            w.path = URL.parse(req.url).pathname;
+            w.param = URL.parse(req.url, true).query;
+        },
+
+        /**
+         * 第一页
+         */
+        first: function(){
+            var w = this;
+
+            return w.getUrl(0);
+        },
+
+        /**
+         * 上一页
+         */
+        prev: function(){
+            var w = this, skip = w.skip - w.limit;
+
+            return w.getUrl(skip < 0 ? 0 : skip);
+        },
+
+        /**
+         * 下一页
+         */
+        next: function(){
+            var w = this, skip = w.skip + w.limit;
+
+            return w.getUrl(skip >= w.total ? w.skip : skip);
+        },
+
+        /**
+         * 末页
+         */
+        last: function(){
+            var w = this;
+
+            return w.getUrl(w.total - w.limit);
+        },
+
+        /**
+         * 当前页码
+         */
+        pageNow: function(){
+            var w = this;
+
+            return Math.floor(w.skip / w.limit) + 1;
+        },
+
+        /**
+         * 总页面
+         */
+        pageNum: function(){
+            var w = this;
+
+            return Math.ceil(w.total / w.limit);
+        },
+
+        /**
+         * 获得URL
+         */
+        getUrl: function(s, l){
+            var w = this, l = l || w.limit, arr = [];
+
+            w.param.skip = s;
+            w.param.limit = l;
+
+            for(var i in w.param){
+                var str = '';
+
+                if(w.param[i].push){
+                    var parr = [];
+                    for(var j=0; j< w.param[i].length; j++){
+                        parr.push(i + '=' + w.param[i][j]);
+                    }
+                    arr.push(parr.join('&'));
+                }else{
+                    arr.push(i + '=' + w.param[i])
+                }
+            }
+
+            return w.path + '?' + arr.join('&');
+        }
+    }
+
+    pager.init({
+        skip: parseInt(req.query.skip),
+        limit: limit,
+        total: total
+    })
+%>
+<style>
+	.pager{background:#f6f6f6;height:32px;padding:20px 0;text-align: center;font-size:14px;line-height: 30px;}
+	.pager a{margin-right: 6px;}
+	.p-now{padding:0 10px;display: inline-block;margin-right: 6px;padding: 0 10px;}
+</style>
+<div class="pager">
+
+	<%
+        var n = pager.pageNow(), t = pager.pageNum();
+        var step = 3, skip = n - step <= 0 ? 1 : n - step, end = n + step >= t ? t : n + step;
+    %>
+    <% if(skip >= 2){ %>
+        <a class="u-btn u-b-white" href="<%= pager.getUrl( 0 ) %>">1</a>
+    <% } %>
+    <% if(skip - 1 > 1){ %>
+        <i class="p-now">...</i>
+    <% } %>
+	<% for(var i=skip; i<=end; i++){ %>
+
+		<% if( n == i ){ %>
+			<b class="p-now"><%= i %></b>
+		<% }else{ %>
+			<a class="u-btn u-b-white" href="<%= pager.getUrl( (i-1) * pager.limit) %>"><%= i %></a>
+		<% } %>
+	<% } %>
+    <% if(end < t){ %>
+        <i class="p-now">...</i>
+    <% } %>
+    <% if(n != t){ %>
+	    <a class="u-btn u-b-white p-next" href="<%= pager.next() %>">下一页</a>
+    <% } %>
+</div>

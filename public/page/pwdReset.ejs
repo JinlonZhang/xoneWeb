@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include /inc/inc.head.ejs %>
+    <link rel='stylesheet' href='/src/css/page/reg.css' />
+</head>
+<body>
+<% include /mod/mod.head.ejs %>
+<div class="reg-c">
+
+    <div class="reg-fm-w g-wp">
+        <div class="reg-sd">
+
+        </div>
+        <div class="reg-mn">
+            <div class="u-fm-tit">设置新密码</div>
+            <% if(msg != ""){ %>
+                <div class="u-fm">
+                    <div class="msg msg-warn" style="display: block"><%= msg %></div>
+                </div>
+            <% }else{ %>
+                <form action="/api/resetPwd" method="post" class="u-fm j-form">
+                    <div class="msg msg-info" id="msg"></div>
+                    <div class="u-fm-i"><i class="u-fm-key">注册邮箱</i><%= fp.login_name %></div>
+                    <div class="u-fm-i"><i class="u-fm-key">新密码</i><input type="password" name="pwd" id="pwd" allow='{"require": 1, "title": "新密码"}'/></div>
+                    <div class="u-fm-i"><i class="u-fm-key">确认新密码</i><input type="password" name="pwd2" allow='{"require": 1, "confirm": "pwd", "title": {"require":"确认新密码", "confirm": "两次密码"} }'/></div>
+                    <div class="u-fm-i u-fm-btn">
+                        <input type="hidden" name="key" value="<%= fp.key %>" />
+                        <input class="u-fm-smt" type="submit" value="确定" />
+                        <a href="javascript://" class="u-btn u-b-orange u-b-big j-submit">确定</a>
+                    </div>
+                </form>
+            <% } %>
+        </div>
+    </div>
+</div>
+<% include /mod/mod.foot.ejs %>
+</body>
+<% include /inc/inc.foot.ejs %>
+<script>
+    $(function(){
+        $('.j-form').data('opt', {
+            text: '新密码设置成功！',
+            fn: function(o){
+                window.location.href = '/login';
+            }
+        });
+    })
+</script>
+</html>

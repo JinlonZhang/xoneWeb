@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../inc/inc.head.ejs %>
+    <link rel='stylesheet' href='/src/css/page/user.css' />
+    <style>
+        .ab-bar{margin-bottom: 25px;}
+        .ab{overflow: hidden;}
+        .ab-panel{float:left;display:inline;width:225px; margin:0 15px 20px 0;padding-bottom: 1px; background: #fff;border-radius: 3px;box-shadow: 0 0px 2px rgba(0,0,0,.3);}
+        .ab-tit{padding: 10px 18px;}
+        .ab-tit p{line-height: 20px;color: #999;margin-top: 5px;}
+        .ab-bd{position: relative;}
+        .ab-link{position: absolute;top:0;left:0;width: 100%;height: 100%;}
+        .ab-img{overflow: hidden}
+        .ab-img .f{height: 150px;width:100%;margin: 0}
+        .ab-img .f img{width: 225px;height: auto;}
+        .ab-img li{float: left;width: 55px;height:55px;margin: 1px 0 0 1px;background: #f6f6f6;overflow: hidden}
+        .ab-img li img{width: 55px;height: 55px;}
+    </style>
+</head>
+<body>
+<% include ../mod/mod.head.ejs %>
+<div class="g-bd us-wp">
+    <div class="g-wp">
+        <% include mod.head.ejs %>
+
+        <div class="us-mn-all">
+            <% if(isSelf){ %>
+                <div class="ab-bar">
+                    <button class="u-btn u-b-white" id="add"><i class="ico ico-plus ico-c-green"></i>添加新专辑</button>
+                </div>
+            <% } %>
+            <div class="ab">
+
+                <% list.forEach(function(ab){ %>
+                <div class="ab-panel j-panel">
+                    <div class="ab-tit">
+                        <a href="<%= linkUrl %>album/<%= ab.album._id %>" target="_blank"><%= ab.album.name %></a>
+                    </div>
+                    <div class="ab-bd">
+                        <a href="<%= linkUrl %>album/<%= ab.album._id %>" target="_blank" class="ab-link"></a>
+                        <ul class="ab-img">
+                            <%
+                                for(var i=0; i<=8; i++) {
+                                    var src = '/src/img/s.png';
+                                    if(ab.imgList[i]){
+                                        src = ab.imgList[i] + (i == 0 ? '!225x150.jpg' : '!100x100.jpg');
+
+                                    }
+                            %>
+                                <li <%= i == 0 ? 'class=f' : '' %> ><img src="<%= src %>" /></li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+
+            <% include ../mod/mod.pager.ejs %>
+        </div><!-- end of us-mn-all -->
+
+    </div><!-- end of g-bd -->
+
+
+    <% include ../mod/mod.foot.ejs %>
+</div>
+<div class="hide">
+    <div class="ab-add" id="addWin">
+        <div class="u-win-tit">添加新专辑</div>
+        <div class="u-win-bd">
+            <form action="/api/album" method="post" class="u-fm u-fm-win j-form">
+                <div class="u-fm-i">
+                    <i class="u-fm-key">名称</i>
+                    <input type="text" name="name" style="width: 300px;" />
+                </div>
+                <div class="u-fm-i">
+                    <i class="u-fm-key">描述</i>
+                    <textarea name="description" style="width: 350px;height: 80px;"></textarea>
+                </div>
+                <div class="u-fm-i u-fm-btn">
+                    <input class="u-fm-smt" type="submit" value="保存" />
+                    <a href="javascript://" class="u-btn u-b-orange u-b-big j-submit"><i class="fa fa-save fa-16 fa-white"></i>保存</a>
+                    <a href="javascript://" class="u-btn u-b-white u-b-big j-Win-close"><i class="fa fa-save fa-16 fa-white"></i>取消</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<% include ../inc/inc.foot.ejs %>
+<% include ../mod/mod.global.ejs %>
+<script>
+    var page = {
+        init: function(){
+            var w = this;
+
+            w.initHTML();
+            w.initEvent();
+        },
+
+        initHTML: function(){
+            var w = this;
+
+            w.win = new UI.Window({
+                opt: {
+                    h: 330,
+                    w: 560
+                }
+            });
+            w.win.setContent( $('#addWin') );
+        },
+
+        initEvent: function(){
+            var w = this;
+
+            $('#add').click(function(){
+                w.win.open();
+            })
+        }
+
+    }
+    $(function(){
+        page.init();
+    })
+</script>
+</body>
+</html>

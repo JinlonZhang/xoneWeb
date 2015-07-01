@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include /inc/inc.head.ejs %>
+</head>
+<body>
+
+<% include /mod/mod.head.ejs %>
+<div class="g-bd g-wp">
+    <% include /mod/mod.tb99.ejs %>
+
+    <div class="ly-tb">
+        <% categoryList.forEach(function(one, j){ %>
+        <div class="ly-tb-it <%= j == 1 ? 'ly-tb-it-mid' : '' %>">
+            <div class="ly-tb-o"><a href="<%= linkUrl + 'guang/' + one.self.urlName %>"><%= one.self.name %></a></div>
+            <ul class="ly-tb-t">
+                <%
+                    one.threeList.forEach(function(three, i){
+                        if(three.pop){
+                %>
+                            <li <%= i == 0 ? 'class=f' : '' %> ><a href="<%= linkUrl + 'guang/' + one.self.urlName %>/<%= three._id %>" target="_blank"><%= three.name %></a></li>
+                <%
+                        }
+                    })
+                %>
+            </ul>
+        </div>
+        <% }) %>
+    </div>
+
+</div>
+
+<div class="ly-item-wp" id="itemListWp">
+    <div class="ly-item g-wp">
+        <div class="ly-item-tit">
+            今日热门宝贝
+            <div class="ly-item-filter" style="display: none;">
+                <a href="<%= URL.parse(req.url).pathname %>?sort_by=hot#itemListWp" class="u-btn u-b-white <%= req.query.sort_by == 'hot' || req.query.sort_by == undefined ? 'u-b-rosy-act' : ''%>">热门</a>
+
+                <a href="<%= URL.parse(req.url).pathname %>?sort_by=new#itemListWp" class="u-btn u-b-white <%= req.query.sort_by == 'new' ? 'u-b-rosy-act' : ''%>">最新</a>
+
+                <div class="u-b-group">
+                    <%
+                    var sort_by = req.query.sort_by || 'hot';
+                    var price = req.query.price || '';
+                    %>
+                    <a href="<%= URL.parse(req.url).pathname %>?sort_by=<%= sort_by %>#itemListWp" class="u-btn u-b-white u-b-left <%= req.query.price == undefined ? 'u-b-rosy-act' : ''%>">全部</a>
+                    <a href="<%= URL.parse(req.url).pathname %>?sort_by=<%= sort_by %>&price=0-50#itemListWp" class="u-btn u-b-white u-b-mid <%= req.query.price == '0-50' ? 'u-b-rosy-act' : ''%>">0-50</a>
+                    <a href="<%= URL.parse(req.url).pathname %>?sort_by=<%= sort_by %>&price=51-100#itemListWp" class="u-btn u-b-white u-b-mid <%= req.query.price == '51-100' ? 'u-b-rosy-act' : ''%>">51-100</a>
+                    <a href="<%= URL.parse(req.url).pathname %>?sort_by=<%= sort_by %>&price=101-200#itemListWp" class="u-btn u-b-white u-b-mid <%= req.query.price == '101-200' ? 'u-b-rosy-act' : ''%>">101-200</a>
+                    <a href="<%= URL.parse(req.url).pathname %>?sort_by=<%= sort_by %>&price=200#itemListWp" class="u-btn u-b-white u-b-right <%= req.query.price == '200' ? 'u-b-rosy-act' : ''%>">200元以上</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="ly-item-list" id="itemList">
+            <% list.forEach(function(item){ %>
+            <div class="ly-item-in j-panel">
+
+                <div class="ly-item-img" style="height: <%= item.img.size.h %>px">
+                    <a href="<%= linkUrl + 'item/' + item._id %>" target="_blank"><img alt="<%= item.name %>" src="<%= item.img.url %>!225x999.jpg" /></a>
+                </div>
+                <div class="ly-item-info">
+                    <div class="ly-item-btn">
+                        <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love j-love" _url="/api/love" _id="<%= item._id %>"><i class="ico ico-love ico-c-white ico-mini ico-none"></i><i class="ly-item-num j-loveNum"><%= item.love_total == 0 ? '' : '(' + item.love_total + ')' %></i></a>
+                        <div class="ly-item-price"><i class="ch-price-p">￥</i><%= item.price.toFixed(2) %></div>
+                    </div>
+                    <div class="ly-item-name"><a href="<%= linkUrl + 'item/' + item._id %>" target="_blank"><%= item.name %></a></div>
+                </div>
+                <div class="ly-item-album">
+                    <button class="u-btn u-b-white u-b-small j-addToAlbum" _id="<%= item._id %>" _src="<%= item.img.url %>!225x999.jpg"><i class="ico ico-plus"></i>收入专辑</button>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+</div>
+
+<div class="hide" id="hide">
+    <div id="itemTmp" class="ly-item-in">
+        <div class="ly-item-img">
+            <a href="javascript://" target="_blank"><img class="j-img" width="225" /></a>
+        </div>
+        <div class="ly-item-info">
+            <div class="ly-item-btn">
+                <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love j-love"><i class="ico ico-love ico-c-white ico-mini ico-none"></i><i class="ly-item-num j-loveNum"></i></a>
+                <div class="ly-item-price"><i class="ch-price-p">￥</i></div>
+            </div>
+            <div class="ly-item-name"><a href="javascript://" target="_blank"></a></div>
+        </div>
+        <div class="ly-item-album">
+            <button class="u-btn u-b-white u-b-small j-addToAlbum"><i class="ico ico-plus"></i>收入专辑</button>
+        </div>
+    </div>
+</div>
+
+<% include /mod/mod.pager.ejs %>
+<% include /mod/mod.foot.ejs %>
+</body>
+<% include /inc/inc.foot.ejs %>
+<% include /mod/mod.global.ejs %>
+<script>
+    var page = {
+
+        loadFlag: false,
+        loadCount: 1,
+        url: {
+            item: '/api/item'
+        },
+
+        init: function(){
+            var w = this;
+
+            w.pageSkip = parseInt('<%= req.query.skip || 0 %>');
+            w.linkUrl = '<%= linkUrl %>item/';
+
+            w.initHTML();
+            w.initEvent();
+        },
+
+        initHTML: function(){
+            var w = this;
+
+            w.wf = new UI.WaterFall({
+                el: $('#itemList')
+            });
+
+        },
+
+        initEvent: function(){
+            var w = this;
+
+            /*
+            window.onscroll = Das.throttle(function(){
+                var x = $(document).scrollTop();
+
+                w.loadMore(x);
+            }, 20);
+            */
+        },
+
+        loadMore: function(x){
+            var w = this, height = document.body.scrollHeight, offHeight = document.body.offsetHeight;
+
+            console && console.log(height - x - offHeight);
+            if(height - x - offHeight <= 1500 && !w.loadFlag && w.loadCount <= 3){
+                w.loadFlag = true;
+                $.ajax({
+                    type: 'get',
+                    dataType: 'json',
+                    data: {skip: w.loadCount * 20 + w.pageSkip, _id: '<%= categoryId %>', sort_by: '<%= sort_by %>', price: '<%= price %>'},
+                    url: w.url.item,
+                    success: function(data){
+                        w.loadFlag = false;
+                        w.buildItem(data.list);
+                    }
+                })
+                w.loadCount++;
+            }
+        },
+
+        buildItem: function(list){
+            var w = this;
+
+            var items = [];
+
+            for(var i=0; i<list.length; i++){
+                var d = list[i];
+                var itemDom = $('#hide').find('#itemTmp').clone(false).removeAttr('id');
+
+                itemDom.find('.j-img').attr('src', d.img.url + '!225x999.jpg').attr('alt', d.name);
+                itemDom.find('.j-love').attr({'_id': d._id, '_url': '/api/love'}).bind('click', function(){ app.bind.loveClick( $(this) ) });
+                itemDom.find('.j-loveNum').text( d.love_total == 0 ? '' : '(' + d.love_total + ')' )
+                itemDom.find('.ly-item-price').append(d.price.toFixed(2));
+                itemDom.find('.ly-item-img').height(d.img.size.h).find('a').attr('href', w.linkUrl + d._id);
+                itemDom.find('.ly-item-name').find('a').attr('href', w.linkUrl + d._id).text(d.name);
+                itemDom.find('.j-addToAlbum').attr({'_id': d._id, '_src': d.img.url + '!225x999.jpg'}).bind('click', function(){ app.bind.addToAlbumClick( $(this) ); })
+
+                $('#itemList').append(itemDom);
+
+                items.push(itemDom.get(0));
+            }
+
+            w.wf.buildFall( $(items) );
+
+        }
+    }
+    $(function(){
+        page.init();
+    })
+</script>
+</html>

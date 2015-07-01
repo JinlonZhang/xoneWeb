@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../inc/inc.head.ejs %>
+    <style>
+
+    </style>
+</head>
+<body>
+<% include ../mod/mod.head.ejs %>
+<div class="g-bd us-wp">
+    <div class="g-wp">
+        <% include mod.head.ejs %>
+
+        <div class="us-mn-all">
+        <div class="ly-item-list" id="thingList">
+            <% list.forEach(function(thing){
+                var user = thing.user, bb = thing.bb;
+                if(bb._id){
+            %>
+                <div class="ly-item-in j-panel">
+                    <div class="ly-item-img ad-sh-img">
+                        <a href="<%= linkUrl + bb.link + bb._id %>" target="_blank">
+                            <%
+                                var img = bb.imgs[0];
+                            %>
+                            <img class="j-itemImg" src="<%= img.url %>!225x999.jpg" style="height: <%= img.size.h %>px"/>
+                        </a>
+                    </div>
+                    <div class="ly-item-info">
+                        <div class="ly-item-btn">
+                            <%
+                                var cls = 'ico-thumbs-up';
+                                if(thing.type == 1){
+                                    cls = 'ico-love';
+                                }
+                            %>
+                            <% if(thing.type == 1){ %>
+                                <div class="ly-item-price"><i class="ch-price-p">￥</i><%= bb.price.toFixed(2) %></div>
+                            <% } %>
+                            <a href="javascript://" class="u-btn u-b-rosy u-b-small ly-item-love j-love" _url="<%= bb.love_api %>" _id="<%= bb._id %>"><i class="ico <%= cls %> ico-none ico-c-white"></i><i class="ly-item-num j-loveNum"><%= bb.love_total == 0 ? '' : '(' + bb.love_total + ')' %></i></a>
+                        </div>
+                        <% if(thing.type == 1){ %>
+                            <div class="ly-item-name">
+                                <a href="<%= linkUrl + bb.link + bb._id %>" target="_blank"><%= bb.name %></a>
+                            </div>
+                        <% } %>
+                        <% if(thing.type == 2){ %>
+                            <div class="ly-item-name">
+                                <%= bb.description %>
+                            </div>
+                        <% } %>
+                        <div class="ly-us">
+                            <div class="ly-us-i">
+                                <a href="<%= linkUrl %>user/<%= user._id %>" target="_blank"><img src="<%= user.avatarUrl%>!50x50" alt="<%= user.name %>" /></a>
+                                <div class="ly-us-ii ch-ells">
+                                    <a href="<%= linkUrl %>user/<%= user._id %>" class="a-n" target="_blank"><%= user.name %></a>
+                                </div>
+                                <div class="ly-us-com">
+                                    <% if(thing.type == 1){ %>
+                                        喜欢该宝贝 <i class="ch-info"><%= dateFormat(thing.date) %></i>
+                                    <% } %>
+                                    <% if(thing.type == 2){ %>
+                                        赞该分享 <i class="ch-info"><%= dateFormat(thing.date) %></i>
+                                    <% } %>
+                                </div>
+                                <!--
+                                <div class="ly-us-com">
+                                    <i class="ch-12">分享到</i> <a href="#" class="a-n">初秋的味道~ 宁静的夏天</a>
+                                </div>
+                                -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            <%
+                }
+            })
+            %>
+        </div>
+        </div>
+
+    </div>
+</div>
+<% include ../mod/mod.foot.ejs %>
+<% include ../inc/inc.foot.ejs %>
+<% include ../mod/mod.global.ejs %>
+<script>
+    var page = {
+
+        init: function(){
+            var w = this;
+
+            w.initHTML();
+            w.initEvent();
+        },
+
+        initHTML: function(){
+            var w = this;
+
+            w.wf = new UI.WaterFall({
+                el: $('#thingList')
+            });
+        },
+
+        initEvent: function(){
+            var w = this;
+
+        }
+    }
+    $(function(){
+        page.init();
+    })
+</script>
+</body>
+</html>

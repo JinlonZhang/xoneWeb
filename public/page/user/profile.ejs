@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../inc/inc.head.ejs %>
+    <link rel='stylesheet' href='/src/css/page/user.css' />
+</head>
+<body>
+<% include ../mod/mod.head.ejs %>
+<div class="g-bd us-wp">
+    <div class="g-wp">
+        <% include mod.head.ejs %>
+
+        <div class="us-bd1">
+
+            <% include mod.side.ejs %>
+
+            <div class="us-mn1">
+                <div class="us-tit">
+                    <b>修改个人资料</b>
+                </div>
+                <div id="msg" class="msg msg-warn hide"></div>
+                <form method="post" action="/api/modifyProfile" class="u-fm j-form">
+                    <div class="u-fm-i">
+                        <i class="u-fm-key">注册邮箱</i>
+                        <i class="u-fm-txt"><%= user.login_name %></i>
+                    </div>
+                    <div class="u-fm-hr"></div>
+                    <div class="u-fm-i">
+                        <i class="u-fm-key">昵称</i>
+                        <input type="text" name="name" value="<%= user.name %>"  allow='{"require": 1, "title":"昵称"}'/>
+                    </div>
+                    <div class="u-fm-i">
+                        <i class="u-fm-key">自我介绍</i>
+                        <textarea name="introduce" style="width: 90%;height: 60px;"><%= user.introduce %></textarea>
+                    </div>
+
+                    <div class="u-fm-i u-fm-btn">
+                        <input class="u-fm-smt" type="submit" value="保存" />
+                        <a href="javascript://" class="u-btn u-b-orange j-submit"><i class="fa fa-save fa-16 fa-white"></i>保存</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<% include ../mod/mod.foot.ejs %>
+<% include ../inc/inc.foot.ejs %>
+<% include ../mod/mod.global.ejs %>
+</body>
+</html>
